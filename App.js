@@ -1,20 +1,65 @@
-import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { Ionicons } from '@expo/vector-icons'; 
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+
+import Dashboard from './screens/Dashboard';
+import Bus from './screens/Bus';
+import QRCode from './screens/QRCode';
+import Profile from './screens/Profile';
+
+const Tab = createBottomTabNavigator();
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <SafeAreaProvider>
+      <NavigationContainer>
+      <Tab.Navigator
+
+        initialRouteName='Dashboard'
+        
+        screenOptions={({ route }) => ({
+          headerShown: false,
+
+          tabBarIcon: ({ focused, color, size }) => {
+            let iconName;
+
+            if (route.name === 'Dashboard') {
+              iconName = focused ? 'home-sharp' : 'home-outline';
+            } else if (route.name === 'Bus') {
+              iconName = focused ? 'bus-sharp' : 'bus-outline';
+            } else if (route.name === 'QRCode') {
+              iconName = focused ? 'qr-code-sharp' : 'qr-code-outline'
+            } else if (route.name === 'Profile') {
+              iconName = focused ? 'card-sharp' : 'card-outline'
+            }
+
+            // You can return any component that you like here!
+            return <Ionicons name={iconName} size={28} color={color} />;
+          },
+          
+          tabBarActiveTintColor: 'blue',
+          tabBarInactiveTintColor: 'gray',
+          tabBarShowLabel: false,
+        
+        })}
+      >
+
+
+
+        <Tab.Screen name="Dashboard" component={Dashboard} />
+        <Tab.Screen name="Bus" component={Bus} />
+        <Tab.Screen name="QRCode" component={QRCode} />
+        <Tab.Screen name="Profile" component={Profile} />
+
+
+
+
+      </Tab.Navigator>
+      </NavigationContainer>
+    </SafeAreaProvider>
+    
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
