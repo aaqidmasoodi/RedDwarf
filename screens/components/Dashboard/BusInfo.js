@@ -1,18 +1,20 @@
 import { StyleSheet, Text, View, Image } from 'react-native'
 import React from 'react'
 import * as Animatable from 'react-native-animatable';
+import { Ionicons } from '@expo/vector-icons'; 
 
 
 const BusInfo = () => {
   return (
     <Animatable.View style={styles.busInfoContainer}
     animation='pulse'
+    useNativeDriver
+
     >
         <View style={styles.busInfo}>
-            <Image
-            style={styles.busVector}
-            source={require('../../../assets/app/busLogo.png')}
-            />
+
+            <Ionicons name='bus-sharp' size={60} color='#e1aD01' />
+
             <View style={styles.busTextInfo}>
                 <Text style={[styles.alignRight, styles.LeavingText]}>Leaving</Text>
                 <Text style={[styles.alignRight, styles.timeText]}>4:30</Text>
@@ -36,7 +38,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignContent: 'center',
         borderRadius: 20,
-        elevation: 10
+        elevation: 10,
 
     },
 
