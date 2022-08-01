@@ -9,6 +9,7 @@ const LiveLocation = () => {
 
   return (
     <TouchableOpacity
+                disabled={false}
                 style={styles.locationContainer}
                 activeOpacity={0.9}
                 onPress={() => navigation.navigate('Map')}
@@ -18,6 +19,8 @@ const LiveLocation = () => {
                     <MapView
                     style={styles.smallMap}
                     provider={PROVIDER_GOOGLE}
+                    scrollEnabled={false}
+                    zoomEnabled={false}
                     region={{
                       latitude: 37.78825,
                       longitude: -122.4324,
@@ -59,6 +62,7 @@ const styles = StyleSheet.create({
         flex: 3,
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20,
+    
       },
     
     

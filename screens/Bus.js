@@ -14,26 +14,28 @@ const Dashboard = () => {
 
   return (
 
-        <SafeAreaView style={styles.container}>
-            
-            
+    <SafeAreaView style={styles.container}>
 
 
-            <ScrollView>
-              <View style={styles.contentContainer}>                
-                <BusBasicInfo/>
 
-                <SeatInfo/>
 
-                <LiveLocation/>
+      <ScrollView>
+        <View style={styles.contentContainer}>
 
-  
 
-              </View>
-            </ScrollView>
+          <BusBasicInfo />
+          <SeatInfo />
+          <LiveLocation />
 
-             
-        </SafeAreaView>
+
+
+
+
+        </View>
+      </ScrollView>
+
+
+    </SafeAreaView>
   )
 }
 
@@ -53,8 +55,8 @@ const styles = StyleSheet.create({
   },
 
 
-  
 
-  });
+
+});
 
 
