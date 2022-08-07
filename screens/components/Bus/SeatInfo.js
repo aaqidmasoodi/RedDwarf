@@ -53,7 +53,7 @@ const SeatInfo = () => {
 
           <View>
             <Text style={{ textAlign: 'center', fontWeight: '600', fontSize: 18, color: '#fff' }}>Your seat is reserved for this month.</Text>
-            <Text style={{ textAlign: 'center', fontSize: 14, color: '#fff', marginTop: 2 }}>Next payment date is 30 May 2022.</Text>
+            <Text style={{ textAlign: 'center', fontSize: 14, color: '#fff', marginTop: 2 }}>Next payment date is 30 Auguest 2022.</Text>
           </View>
 
         </View>}

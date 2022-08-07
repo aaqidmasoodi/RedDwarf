@@ -3,18 +3,18 @@ import React from 'react'
 
 
 const TodayView = () => {
-  return (
-    <View style={styles.todayContainer}>
-        <View>
-            <Text style={styles.dateText}>25 July 2022</Text>
-            <Text style={styles.dashboardText}>Dashboard</Text>
+    return (
+        <View style={styles.todayContainer}>
+            <View>
+                <Text style={styles.dateText}>25 July 2022</Text>
+                <Text style={styles.dashboardText}>Dashboard</Text>
+            </View>
+            <Image
+                style={styles.dashboardPhoto}
+                source={require('../../../assets/app/profile_photo.jpeg')}
+            />
         </View>
-        <Image
-        style={styles.dashboardPhoto}
-        source={require('../../../assets/app/dashboardPhoto.jpg')}
-        />
-    </View>
-  )
+    )
 }
 
 export default TodayView
@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#ffffff',
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignContent: 'center',
+        alignItems: 'flex-end',
     },
 
     dateText: {
@@ -42,10 +42,11 @@ const styles = StyleSheet.create({
     },
 
     dashboardPhoto: {
-        width: 75,
-        height: 75,
-        resizeMode: 'contain',
-        borderRadius: 30
+        width: 60,
+        height: 60,
+        resizeMode: 'cover',
+        borderRadius: 30,
+        marginRight: 10
     }
 
 })

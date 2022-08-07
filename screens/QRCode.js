@@ -4,18 +4,18 @@ import React from 'react'
 
 const QRCode = () => {
   return (
-    
+
     <SafeAreaView style={styles.container}>
-            
-    <View style={styles.textContainer}>
+
+      <View style={styles.textContainer}>
         <Text style={styles.scanText}>Show QR code to validate</Text>
         <Text style={styles.validateText}> Your payment can be securely validated</Text>
 
         <TouchableOpacity>
-            <Text style={styles.viewQRBtn}>View QR</Text>
+          <Text style={styles.viewQRBtn}>View QR</Text>
         </TouchableOpacity>
-    </View>
-     
+      </View>
+
     </SafeAreaView>
   )
 }

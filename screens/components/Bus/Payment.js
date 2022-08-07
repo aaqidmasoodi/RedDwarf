@@ -11,7 +11,7 @@ const Payment = (props) => {
   const attemptPayment = async () => {
     try {
       // sending request
-      const response = await fetch("http://10.0.2.2:3000/api/accounts/create-payment-intent/", {
+      const response = await fetch("http://10.0.2.2:3000/api/payments/create-payment-intent/", {
         method: "POST",
         body: JSON.stringify({ item: 'item' }),
         headers: {
@@ -23,7 +23,7 @@ const Payment = (props) => {
       const clientSecret = data.clientSecret;
       const initSheet = await stripe.initPaymentSheet({
         paymentIntentClientSecret: clientSecret,
-        merchantDisplayName: 'com.merchant.reddwarf'
+        merchantDisplayName: 'com.merchant.reddwarf',
       });
       if (initSheet.error) return Alert.alert(initSheet.error.message);
       const presentSheet = await stripe.presentPaymentSheet({
