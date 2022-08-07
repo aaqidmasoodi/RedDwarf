@@ -2,9 +2,14 @@ import { StyleSheet, Text, View, Image } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import React from 'react'
 
+
+
+
 const Profile = () => {
   return (
     <SafeAreaView style={styles.container}>
+
+      {/* Header */}
 
       <View style={styles.profileHeaderContainer}>
         <Image
@@ -12,11 +17,14 @@ const Profile = () => {
           source={require('../assets/app/profile_photo.jpeg')}
         />
         <View style={styles.profileHeaderInner}>
-          <Text style={styles.profileName}>Zaira Waseem</Text>
+          <Text style={styles.profileName}>Zaira Wasim</Text>
           <Text style={styles.profileContact}>+91 {'9797 944597'}</Text>
         </View>
 
       </View>
+
+
+
 
     </SafeAreaView>
   )

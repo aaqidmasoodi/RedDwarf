@@ -45,7 +45,8 @@ const styles = StyleSheet.create({
   validateText: {
     textAlign: 'center',
     fontSize: 18,
-    width: 300
+    width: 300,
+    color: '#4f4f4f'
   },
 
 
