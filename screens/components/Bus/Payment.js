@@ -1,17 +1,20 @@
 import { StyleSheet, Text, View, TouchableOpacity, Alert } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import { useStripe } from '@stripe/stripe-react-native'
 import * as Animatable from 'react-native-animatable';
-
+import { BASE_URL } from '../../../api/config'
 const AnimatedTouchable = Animatable.createAnimatableComponent(TouchableOpacity);
 const Payment = (props) => {
 
   const stripe = useStripe();
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const attemptPayment = async () => {
+    setIsLoading(true);
     try {
       // sending request
-      const response = await fetch("http://10.0.2.2:3000/api/payments/create-payment-intent/", {
+      const response = await fetch(`${BASE_URL}/payments/create-payment-intent/`, {
         method: "POST",
         body: JSON.stringify({ item: 'item' }),
         headers: {
@@ -19,21 +22,37 @@ const Payment = (props) => {
         },
       });
       const data = await response.json();
-      if (!response.ok) return Alert.alert(data.message);
+      if (!response.ok) {
+        setIsLoading(false);
+
+        return Alert.alert(data.message);
+      }
       const clientSecret = data.clientSecret;
       const initSheet = await stripe.initPaymentSheet({
         paymentIntentClientSecret: clientSecret,
         merchantDisplayName: 'com.merchant.reddwarf',
       });
-      if (initSheet.error) return Alert.alert(initSheet.error.message);
+      if (initSheet.error) {
+        setIsLoading(false);
+
+        return Alert.alert(initSheet.error.message);
+      }
       const presentSheet = await stripe.presentPaymentSheet({
         clientSecret,
       });
-      if (presentSheet.error) return Alert.alert(presentSheet.error.message);
-      Alert.alert("Payment complete, thank you!");
+      if (presentSheet.error) {
+
+        setIsLoading(false);
+
+        return Alert.alert(presentSheet.error.message);
+      }
+      setIsLoading(false);
       props.updateStatus(true);
+      Alert.alert("Payment Successful. Thank you!");
+
     } catch (err) {
       console.error(err);
+      setIsLoading(false);
       Alert.alert("Something went wrong, try again later!");
     }
   };
@@ -50,6 +69,7 @@ const Payment = (props) => {
       style={styles.seatMakePayment}
       activeOpacity={0.9}
       onPress={attemptPayment}
+      disabled={isLoading}
       useNativeDriver
     >
       <Text style={{ fontSize: 22, fontWeight: '600', color: '#009ACD' }}>₹ Pay</Text>

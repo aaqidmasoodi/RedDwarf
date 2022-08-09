@@ -22,9 +22,3 @@ const Route = () => {
 }
 
 export default Route
-
-// # host api
-// # create these tempplates
-
-
-// both part of QR code
