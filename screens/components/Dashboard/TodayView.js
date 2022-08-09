@@ -1,6 +1,5 @@
 import { StyleSheet, Text, View, Image } from 'react-native'
 import React from 'react'
-import getToday from '../../../utils/getToday'
 
 
 
@@ -8,8 +7,7 @@ const TodayView = () => {
     return (
         <View style={styles.todayContainer}>
             <View>
-                <Text style={styles.dateText}>{getToday()}</Text>
-                <Text style={styles.dashboardText}>Dashboard</Text>
+                <Text style={styles.greetText}>Hi, Aaqid</Text>
             </View>
             <Image
                 style={styles.dashboardPhoto}
@@ -27,27 +25,20 @@ const styles = StyleSheet.create({
         backgroundColor: '#ffffff',
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems: 'flex-end',
     },
 
-    dateText: {
-        fontSize: 20,
-        fontWeight: '600',
-        color: '#e1aD01',
-    },
-
-    dashboardText: {
+    greetText: {
         fontSize: 35,
-        fontWeight: '400',
+        fontWeight: '300',
         color: '#6f6f6f',
         marginTop: -10
     },
 
     dashboardPhoto: {
-        width: 60,
-        height: 60,
+        width: 40,
+        height: 40,
         resizeMode: 'cover',
-        borderRadius: 30,
+        borderRadius: 20,
         marginRight: 10
     }
 

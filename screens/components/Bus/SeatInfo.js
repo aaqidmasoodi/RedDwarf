@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     height: 300,
     borderRadius: 20,
-    elevation: 10,
+    elevation: 5,
   },
 
   seatInfoTop: {

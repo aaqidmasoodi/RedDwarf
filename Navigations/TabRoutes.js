@@ -39,7 +39,7 @@ const TabRoutes = () => {
                     return <Ionicons name={iconName} size={28} color={color} />;
                 },
 
-                tabBarActiveTintColor: 'blue',
+                tabBarActiveTintColor: '#cf8300',
                 tabBarInactiveTintColor: 'gray',
                 tabBarShowLabel: false,
 
