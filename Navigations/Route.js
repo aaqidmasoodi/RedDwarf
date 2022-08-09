@@ -12,7 +12,7 @@ const Route = () => {
         <NavigationContainer>
 
             <Stack.Navigator>
-                {true ? MainStack(Stack)
+                {false ? MainStack(Stack)
                     : AuthStack(Stack)
                 }
             </Stack.Navigator>
@@ -22,3 +22,9 @@ const Route = () => {
 }
 
 export default Route
+
+// # host api
+// # create these tempplates
+
+
+// both part of QR code

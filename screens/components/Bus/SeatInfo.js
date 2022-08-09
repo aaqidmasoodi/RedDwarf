@@ -5,6 +5,7 @@ import { StripeProvider } from '@stripe/stripe-react-native';
 import Payment from './Payment';
 import { STRIPE_PUBLISHABLE_KEY } from '@env';
 
+
 const SeatInfo = () => {
 
   const [active, setActive] = useState(false);
@@ -71,6 +72,7 @@ const SeatInfo = () => {
     </View>
   )
 }
+
 
 export default SeatInfo
 

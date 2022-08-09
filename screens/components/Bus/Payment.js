@@ -38,6 +38,9 @@ const Payment = (props) => {
     }
   };
 
+  // shutdown 0.5ml
+  // 4
+
   return (
     <AnimatedTouchable
       animation={'pulse'}

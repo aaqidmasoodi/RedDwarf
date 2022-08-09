@@ -1,12 +1,14 @@
 import { StyleSheet, Text, View, Image } from 'react-native'
 import React from 'react'
+import getToday from '../../../utils/getToday'
+
 
 
 const TodayView = () => {
     return (
         <View style={styles.todayContainer}>
             <View>
-                <Text style={styles.dateText}>25 July 2022</Text>
+                <Text style={styles.dateText}>{getToday()}</Text>
                 <Text style={styles.dashboardText}>Dashboard</Text>
             </View>
             <Image

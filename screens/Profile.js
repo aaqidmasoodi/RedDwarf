@@ -17,7 +17,7 @@ const Profile = () => {
           source={require('../assets/app/profile_photo.jpeg')}
         />
         <View style={styles.profileHeaderInner}>
-          <Text style={styles.profileName}>Zaira Wasim</Text>
+          <Text style={styles.profileName}>Aaqid Masoodi</Text>
           <Text style={styles.profileContact}>+91 {'9797 944597'}</Text>
         </View>
 
