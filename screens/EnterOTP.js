@@ -1,7 +1,6 @@
 import { StyleSheet, Text, View, KeyboardAvoidingView, TextInput, TouchableOpacity } from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { min } from 'react-native-reanimated';
 
 const EnterOTP = () => {
     let textInput = useRef(null);
@@ -76,7 +75,7 @@ const EnterOTP = () => {
                     <TouchableOpacity>
 
                         <View style={styles.btnResend}>
-                            <Text style={styles.textResend}>Resend OTP</Text>
+                            <Text style={styles.textResend}>{"Resend OTP (24)"}</Text>
                         </View>
 
                     </TouchableOpacity>

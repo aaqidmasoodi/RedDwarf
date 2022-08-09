@@ -75,12 +75,7 @@ const SignUp = () => {
 
                 </View>
 
-                <TouchableOpacity
-                    style={styles.navigateTextContainer}
-                    onPress={() => navigation.navigate('Login')}
-                >
-                    <Text style={{ fontSize: 16, color: '#244db7' }}>Already have an account? Login</Text>
-                </TouchableOpacity>
+
 
                 <View style={styles.viewBottom}>
 
@@ -90,7 +85,7 @@ const SignUp = () => {
                     >
                         <View style={[styles.btnContinue,
                         {
-                            backgroundColor: phoneIsValid(phoneNumber) ? '#244db7' : '#6f6f6f'
+                            backgroundColor: phoneIsValid(phoneNumber) ? '#244db7' : '#8f8f8f'
                         }
                         ]}>
                             <Text style={styles.textContinue}>Send OTP</Text>
@@ -98,7 +93,16 @@ const SignUp = () => {
 
                     </TouchableOpacity>
 
+                    <TouchableOpacity
+                        style={styles.navigateTextContainer}
+                        onPress={() => navigation.navigate('Login')}
+                    >
+                        <Text style={{ fontSize: 16, color: '#244db7' }}>Already have an account? Login</Text>
+                    </TouchableOpacity>
+
                 </View>
+
+
 
 
             </KeyboardAvoidingView>
@@ -189,8 +193,7 @@ const styles = StyleSheet.create({
     },
 
     navigateTextContainer: {
-        marginVertical: 30,
-        padding: 10
+        marginVertical: 10
     },
 
 

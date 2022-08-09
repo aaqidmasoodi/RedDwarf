@@ -13,13 +13,13 @@ export const rootSlice = createSlice({
     },
 
     logout: (state) => {
-        state.isLoggedIn = false
+      state.isLoggedIn = false
     }
   },
 })
 
 // Action creators are generated for each case reducer function
-export const { login, logout} = rootSlice.actions
+export const { login, logout } = rootSlice.actions
 
 // Selectors
 export const selectIsLoggedIn = () => state.root.isLoggedIn;
