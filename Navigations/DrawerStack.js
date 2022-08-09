@@ -1,13 +1,22 @@
 import React from 'react'
-import { createDrawerNavigator } from '@react-navigation/drawer';
+import { Dimensions } from 'react-native';
 
-const Drawer = createDrawerNavigator();
+import { createDrawerNavigator } from '@react-navigation/drawer';
 import TabRoutes from './TabRoutes';
 
 
+
+const windowWidth = Dimensions.get('window').width;
+const Drawer = createDrawerNavigator();
+
 const DrawerStack = () => {
     return (
-        <Drawer.Navigator>
+        <Drawer.Navigator
+            screenOptions={{
+                drawerType: 'slide',
+                swipeEdgeWidth: windowWidth
+            }}
+        >
             <Drawer.Screen
                 name="Home"
                 component={TabRoutes}

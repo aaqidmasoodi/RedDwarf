@@ -6,7 +6,7 @@ const MainStack = (Stack) => {
     return (
         <>
             <Stack.Screen
-                name='Home'
+                name='HomeRoute'
                 component={DrawerStack}
                 options={{
                     headerShown: false
