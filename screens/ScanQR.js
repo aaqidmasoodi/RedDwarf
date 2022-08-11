@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Text, View, StyleSheet, Button } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
+import { useNavigation } from '@react-navigation/native';
 
 export default function App() {
+
+    const navigation = useNavigation();
     const [hasPermission, setHasPermission] = useState(null);
     const [scanned, setScanned] = useState(false);
 
@@ -19,6 +22,7 @@ export default function App() {
         setScanned(true);
         if (type === 'org.iso.QRCode') {
             console.log(data);
+            navigation.navigate('VerificationStatus');
         }
     };
 
@@ -47,7 +51,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center'
     },
-
 
 
 }); 
