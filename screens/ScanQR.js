@@ -1,56 +1,98 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, StyleSheet, Button } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import { useNavigation } from '@react-navigation/native';
+import { StyleSheet, Text, View, Button, ActivityIndicator, TouchableOpacity } from 'react-native'
+import { MaterialIcons, Ionicons } from '@expo/vector-icons';
 
-export default function App() {
+
+const ScanQR = () => {
+    const [hasPermission, setHasPermission] = useState(null);
+    const [isActive, setIsActive] = useState(true);
+    const [payload, setPayload] = useState('');
 
     const navigation = useNavigation();
-    const [hasPermission, setHasPermission] = useState(null);
-    const [scanned, setScanned] = useState(false);
+
 
     useEffect(() => {
-        const getBarCodeScannerPermissions = async () => {
+        (async () => {
             const { status } = await BarCodeScanner.requestPermissionsAsync();
             setHasPermission(status === 'granted');
-        };
-
-        getBarCodeScannerPermissions();
+            setIsActive(true);
+        })();
     }, []);
 
     const handleBarCodeScanned = ({ type, data }) => {
-        setScanned(true);
-        if (type === 'org.iso.QRCode') {
-            console.log(data);
-            navigation.navigate('VerificationStatus');
-        }
+        setPayload(data);
+        setIsActive(false);
     };
 
     if (hasPermission === null) {
-        return <Text>Requesting for camera permission</Text>;
+        return <View style={styles.container}>
+            <ActivityIndicator />
+        </View>
     }
     if (hasPermission === false) {
-        return <Text>No access to camera</Text>;
+        return <View style={styles.container}>
+            <Text>No access to camera</Text>
+        </View>
+
     }
 
     return (
         <View style={styles.container}>
-            <BarCodeScanner
-                onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-                style={StyleSheet.absoluteFillObject}
-            />
-            {/* {scanned && <Button title={'Tap to Scan Again'} onPress={() => setScanned(false)} />} */}
+            {isActive && (
+                <BarCodeScanner style={styles.viewport} onBarCodeScanned={handleBarCodeScanned} />
+            )}
+
+            {!isActive && (
+                <View style={styles.container}>
+                    <MaterialIcons name="verified" size={256} color="darkgreen" />
+                    <Text style={styles.payloadText}>Payload: {payload}</Text>
+                    <View style={styles.bottomBtnsContainer}>
+                        <TouchableOpacity
+                            onPress={() => setIsActive(true)}
+                            style={styles.bottomBtn}>
+                            <Ionicons name="scan-sharp" size={36} color="#6f6f6f" />
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={() => navigation.navigate('Dashboard')}
+                            style={styles.bottomBtn}>
+                            <Ionicons name="home-sharp" size={36} color="#6f6f6f" />
+                        </TouchableOpacity>
+                    </View>
+
+                </View>
+            )}
+
+
         </View>
     );
 }
 
-const styles = StyleSheet.create({
+export default ScanQR;
 
+const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center'
     },
 
+    viewport: {
+        height: '100%',
+        width: '100%'
+    },
 
-}); 
+    bottomBtnsContainer: {
+        flexDirection: 'row',
+        marginTop: 100
+    },
+
+
+    bottomBtn: {
+        margin: 5,
+        padding: 20
+    },
+
+
+});
