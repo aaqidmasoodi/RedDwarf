@@ -10,7 +10,7 @@ const QR = () => {
     return (
         <SafeAreaView style={styles.container}>
             <QRCode
-                value={qrvalue ? qrvalue : 'NA'}
+                value={qrvalue ? qrvalue : 'https://cukbrs.herokuapp.com/'}
                 size={250}
                 color="black"
                 backgroundColor="white"

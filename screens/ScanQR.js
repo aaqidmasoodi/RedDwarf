@@ -1,59 +1,53 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
-import { Camera, CameraType } from 'expo-camera';
+import { Text, View, StyleSheet, Button } from 'react-native';
+import { BarCodeScanner } from 'expo-barcode-scanner';
 
 export default function App() {
     const [hasPermission, setHasPermission] = useState(null);
-    const [type, setType] = useState(CameraType.back);
+    const [scanned, setScanned] = useState(false);
 
     useEffect(() => {
-        (async () => {
-            const { status } = await Camera.requestCameraPermissionsAsync();
+        const getBarCodeScannerPermissions = async () => {
+            const { status } = await BarCodeScanner.requestPermissionsAsync();
             setHasPermission(status === 'granted');
-        })();
+        };
+
+        getBarCodeScannerPermissions();
     }, []);
 
+    const handleBarCodeScanned = ({ type, data }) => {
+        setScanned(true);
+        if (type === 'org.iso.QRCode') {
+            console.log(data);
+        }
+    };
+
     if (hasPermission === null) {
-        return <View />;
+        return <Text>Requesting for camera permission</Text>;
     }
     if (hasPermission === false) {
         return <Text>No access to camera</Text>;
     }
+
     return (
         <View style={styles.container}>
-            <Camera style={styles.camera} type={type}>
-                <View style={styles.buttonContainer}>
-                    <TouchableOpacity
-                        style={styles.button}
-                        onPress={() => {
-                            setType(type === CameraType.back ? CameraType.front : CameraType.back);
-                        }}>
-                        <Text style={styles.text}> Flip </Text>
-                    </TouchableOpacity>
-                </View>
-            </Camera>
+            <BarCodeScanner
+                onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+                style={StyleSheet.absoluteFillObject}
+            />
+            {/* {scanned && <Button title={'Tap to Scan Again'} onPress={() => setScanned(false)} />} */}
         </View>
     );
 }
-
 
 const styles = StyleSheet.create({
 
     container: {
         flex: 1,
-    },
-
-    camera: {
-        flex: 1,
-        padding: 20,
-        justifyContent: 'flex-end',
+        justifyContent: 'center',
         alignItems: 'center'
     },
 
-    buttonContainer: {
-        width: 100,
-        height: 100,
-        backgroundColor: 'red'
-    }
+
 
 }); 
