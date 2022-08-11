@@ -72,7 +72,7 @@ const Payment = (props) => {
       disabled={isLoading}
       useNativeDriver
     >
-      <Text style={{ fontSize: 22, fontWeight: '600', color: '#009ACD' }}>₹ Pay</Text>
+      <Text style={{ fontSize: 22, fontWeight: '600', color: '#cf8300' }}>₹ Pay</Text>
     </AnimatedTouchable>
   )
 }

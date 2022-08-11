@@ -12,7 +12,8 @@ const SeatInfo = () => {
 
   return (
 
-    <View style={styles.seatInfoContainer}>
+    <View style={[styles.seatInfoContainer,
+    Platform.OS === 'ios' ? styles.shadow : null]}>
 
       <View style={styles.seatInfoTop}>
 
@@ -77,6 +78,15 @@ const SeatInfo = () => {
 export default SeatInfo
 
 const styles = StyleSheet.create({
+
+  shadow: {
+    shadowOffset: { width: 0, height: 5 },
+    shadowColor: 'black',
+    shadowOpacity: 0.3,
+    shadowRadius: 5,
+    zIndex: 999,
+  },
+
   seatInfoContainer: {
     marginTop: 10,
     height: 300,

@@ -12,7 +12,7 @@ LogBox.ignoreAllLogs(true);
 export default function App() {
   return (
     <Provider store={store}>
-      <StatusBar barStyle="dark-content" hidden={false} backgroundColor="#ffffff" translucent={true} />
+      <StatusBar barStyle="dark-content" hidden={false} backgroundColor="#ffffff00" translucent={true} />
       <Route />
     </Provider>
 

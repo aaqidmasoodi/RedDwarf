@@ -4,6 +4,7 @@ import { Dimensions } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import TabRoutes from './TabRoutes';
 import Settings from '../screens/Settings';
+import ScanQR from '../screens/ScanQR';
 import CustomDrawer from '../screens/components/CustomDrawer';
 
 import { Ionicons } from '@expo/vector-icons';
@@ -32,6 +33,8 @@ const DrawerStack = () => {
                         iconName = focused ? 'home-sharp' : 'home-outline';
                     } else if (route.name === 'Settings') {
                         iconName = focused ? 'settings-sharp' : 'settings-outline';
+                    } else if (route.name === 'ScanQR') {
+                        iconName = focused ? 'scan-sharp' : 'scan-outline'
                     }
 
                     return <Ionicons name={iconName} size={28} color={color} />;
@@ -51,6 +54,13 @@ const DrawerStack = () => {
             <Drawer.Screen
                 name="Settings"
                 component={Settings}
+                options={{
+                    headerShown: false,
+                }}
+            />
+            <Drawer.Screen
+                name="ScanQR"
+                component={ScanQR}
                 options={{
                     headerShown: false,
                 }}

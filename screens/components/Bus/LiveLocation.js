@@ -10,7 +10,8 @@ const LiveLocation = () => {
   return (
     <TouchableOpacity
       disabled={false}
-      style={styles.locationContainer}
+      style={[styles.locationContainer,
+      Platform.OS === 'ios' ? styles.shadow : null]}
       activeOpacity={0.9}
       onPress={() => navigation.navigate('Map')}
     >
@@ -44,6 +45,15 @@ const LiveLocation = () => {
 export default LiveLocation
 
 const styles = StyleSheet.create({
+
+  shadow: {
+    shadowOffset: { width: 0, height: 5 },
+    shadowColor: 'black',
+    shadowOpacity: 0.3,
+    shadowRadius: 5,
+    zIndex: 999,
+  },
+
   locationContainer: {
     elevation: 10,
     marginTop: 20,
@@ -60,14 +70,11 @@ const styles = StyleSheet.create({
 
   smallMapContainer: {
     flex: 3,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
 
   },
 
 
   smallMap: {
-    borderRadius: 20,
     flex: 3,
 
   },

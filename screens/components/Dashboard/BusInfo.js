@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image } from 'react-native'
+import { StyleSheet, Text, View, Image, Platform } from 'react-native'
 import React from 'react'
 import * as Animatable from 'react-native-animatable';
 import { Ionicons } from '@expo/vector-icons';
@@ -6,7 +6,8 @@ import { Ionicons } from '@expo/vector-icons';
 
 const BusInfo = () => {
     return (
-        <Animatable.View style={styles.busInfoContainer}
+        <Animatable.View style={[styles.busInfoContainer,
+        Platform.OS === 'ios' ? styles.shadow : null]}
             animation='pulse'
             useNativeDriver
 
@@ -31,6 +32,15 @@ const BusInfo = () => {
 export default BusInfo
 
 const styles = StyleSheet.create({
+
+    shadow: {
+        shadowOffset: { width: 0, height: 0 },
+        shadowColor: 'black',
+        shadowOpacity: 0.3,
+        shadowRadius: 5,
+        zIndex: 999,
+    },
+
     busInfoContainer: {
         backgroundColor: '#ffffff',
         marginTop: 20,
@@ -39,6 +49,7 @@ const styles = StyleSheet.create({
         alignContent: 'center',
         borderRadius: 20,
         elevation: 5,
+
 
     },
 

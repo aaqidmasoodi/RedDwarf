@@ -1,8 +1,11 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import React from 'react'
+import { useNavigation } from '@react-navigation/native';
 
 const QRCode = () => {
+
+  const navigation = useNavigation();
   return (
 
     <SafeAreaView style={styles.container}>
@@ -11,7 +14,9 @@ const QRCode = () => {
         <Text style={styles.scanText}>Show QR code to validate</Text>
         <Text style={styles.validateText}> Your payment can be securely validated</Text>
 
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('QR')}
+        >
           <Text style={styles.viewQRBtn}>View QR</Text>
         </TouchableOpacity>
       </View>
@@ -55,6 +60,6 @@ const styles = StyleSheet.create({
     padding: 20,
     fontWeight: '600',
     fontSize: 18,
-    color: 'blue'
+    color: '#cf8300'
   }
 });

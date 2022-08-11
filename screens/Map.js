@@ -26,7 +26,8 @@ const Map = () => {
       <TouchableOpacity
         onPress={() => navigation.navigate('Bus')}
         activeOpacity={0.9}
-        style={styles.button}
+        style={[styles.button,
+        Platform.OS === 'ios' ? styles.shadow : null]}
       >
         <Ionicons name='arrow-back' size={24} color='blue' />
       </TouchableOpacity>
@@ -40,6 +41,15 @@ const Map = () => {
 export default Map
 
 const styles = StyleSheet.create({
+
+  shadow: {
+    shadowOffset: { width: 0, height: 0 },
+    shadowColor: 'black',
+    shadowOpacity: 0.3,
+    shadowRadius: 5,
+    zIndex: 999,
+  },
+
   container: {
     flex: 1
   },
