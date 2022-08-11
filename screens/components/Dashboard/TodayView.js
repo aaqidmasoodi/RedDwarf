@@ -25,6 +25,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#ffffff',
         flexDirection: 'row',
         justifyContent: 'space-between',
+        alignItems: 'flex-end'
     },
 
     greetText: {

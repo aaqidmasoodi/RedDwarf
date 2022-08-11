@@ -18,7 +18,7 @@ const LiveLocation = () => {
 
         <MapView
           style={styles.smallMap}
-          provider={PROVIDER_GOOGLE}
+          // provider={PROVIDER_GOOGLE}
           scrollEnabled={false}
           zoomEnabled={false}
           region={{

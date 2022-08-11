@@ -65,8 +65,7 @@ const styles = StyleSheet.create({
 
   contentContainer: {
     height: '100%',
-    paddingHorizontal: 20,
-    paddingBottom: 20
+    padding: 20,
   },
 
   driverContainer: {

@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from 'react'
-import { StyleSheet, Text, View, KeyboardAvoidingView, TextInput, TouchableOpacity } from 'react-native'
+import { Platform, StyleSheet, Text, View, KeyboardAvoidingView, TextInput, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { useNavigation } from '@react-navigation/native'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -46,8 +46,8 @@ const SignUp = () => {
         <SafeAreaView style={styles.container}>
 
             <KeyboardAvoidingView
-                keyboardVerticalOffset={50}
-                behavior={'undefined'}
+                // keyboardVerticalOffset={50}
+                behavior={Platform.OS === 'ios' ? 'padding' : 'undefined'}
                 style={styles.avoidingContainer}
             >
 

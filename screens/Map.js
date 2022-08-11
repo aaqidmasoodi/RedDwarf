@@ -12,7 +12,7 @@ const Map = () => {
     <View style={styles.container}>
       <MapView
         style={styles.map}
-        provider={PROVIDER_GOOGLE}
+        // provider={PROVIDER_GOOGLE}
         region={{
           latitude: 34.23119965611817,
           longitude: 74.7271553195992,

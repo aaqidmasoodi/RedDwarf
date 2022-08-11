@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, KeyboardAvoidingView, TextInput, TouchableOpacity } from 'react-native'
+import { Platform, StyleSheet, Text, View, KeyboardAvoidingView, TextInput, TouchableOpacity } from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
@@ -23,8 +23,8 @@ const EnterOTP = () => {
         <SafeAreaView style={styles.container}>
 
             <KeyboardAvoidingView
-                keyboardVerticalOffset={50}
-                behavior={'undefined'}
+                // keyboardVerticalOffset={50}
+                behavior={Platform.OS === 'ios' ? 'padding' : 'undefined'}
                 style={styles.avoidingContainer}
             >
 
