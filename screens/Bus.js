@@ -38,7 +38,7 @@ const Dashboard = () => {
             </View>
 
             <TouchableOpacity style={styles.driverNumber}>
-              <Text style={{ color: '#009ACD', fontWeight: '600' }}>Call {'+91 9797 944597'}</Text>
+              <Text style={{ color: '#cf8300', fontWeight: '600' }}>Call {'+91 9797 944597'}</Text>
             </TouchableOpacity>
 
           </View>
@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     padding: 10,
     borderWidth: 2,
-    borderColor: '#009ACD',
+    borderColor: '#cf8300',
     borderRadius: 20,
     justifyContent: 'center',
     alignItems: 'center'

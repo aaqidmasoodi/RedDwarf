@@ -2,7 +2,7 @@ import React from 'react'
 import Login from '../screens/Login'
 import SignUp from '../screens/SignUp'
 import EnterOTP from '../screens/EnterOTP'
-
+import OTPValidated from '../screens/OTPValidated'
 
 const AuthStack = (Stack) => {
     return (
@@ -28,6 +28,16 @@ const AuthStack = (Stack) => {
                 name='EnterOTP'
                 component={EnterOTP}
                 options={{
+                    gestureEnabled: false,
+                    headerShown: false
+                }}
+            />
+
+            <Stack.Screen
+                name='OTPValidated'
+                component={OTPValidated}
+                options={{
+                    gestureEnabled: false,
                     headerShown: false
                 }}
             />

@@ -21,9 +21,11 @@ const ScanQR = () => {
         })();
     }, []);
 
+
     const handleBarCodeScanned = ({ type, data }) => {
         setPayload(data);
         setIsActive(false);
+        // navigation.navigate('Dashboard')
     };
 
     if (hasPermission === null) {

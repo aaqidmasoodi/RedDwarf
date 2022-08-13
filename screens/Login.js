@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from 'react'
-import { Platform, StyleSheet, Text, View, KeyboardAvoidingView, TextInput, TouchableOpacity } from 'react-native'
+import { Platform, StyleSheet, Text, View, KeyboardAvoidingView, TextInput, TouchableOpacity, ActivityIndicator } from 'react-native'
 import React from 'react'
 import { useNavigation } from '@react-navigation/native'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -19,6 +19,7 @@ const Login = () => {
 
     const [phoneNumber, setPhoneNumber] = useState('');
     const [focusInput, setFocusInput] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     const navigation = useNavigation();
 
@@ -100,11 +101,19 @@ const Login = () => {
                     >
                         <View style={[styles.btnContinue,
                         {
-                            backgroundColor: phoneIsValid(phoneNumber) ? '#244db7' : '#8f8f8f'
+                            borderColor: phoneIsValid(phoneNumber) ? '#cf8300' : '#afafaf'
                         }
                         ]}>
-                            <Text style={styles.textContinue}>Login</Text>
+                            {!isLoading && <Text style={[styles.textContinue,
+                            {
+                                color: phoneIsValid(phoneNumber) ? '#cf8300' : '#afafaf'
+                            }
+                            ]}>Login</Text>}
+
+                            {isLoading && <ActivityIndicator size="large" color="#cf8300" />}
+
                         </View>
+
 
                     </TouchableOpacity>
 
@@ -112,7 +121,7 @@ const Login = () => {
                         style={styles.navigateTextContainer}
                         onPress={() => navigation.navigate('SignUp')}
                     >
-                        <Text style={{ fontSize: 16, color: '#244db7' }}>Dont't have an account? Sign up</Text>
+                        <Text style={{ fontSize: 16, color: '#cf8300' }}>Dont't have an account? Sign up</Text>
                     </TouchableOpacity>
 
                 </View>
@@ -205,13 +214,15 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#244db7'
+        backgroundColor: '#ffffff',
+        borderWidth: 2,
     },
 
     textContinue: {
         color: '#ffffff',
         alignItems: 'center',
-        fontSize: 18
+        fontSize: 18,
+        fontWeight: 'bold'
     },
 
     navigateTextContainer: {

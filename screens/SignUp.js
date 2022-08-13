@@ -1,8 +1,11 @@
 import { useRef, useState, useEffect } from 'react'
-import { Platform, StyleSheet, Text, View, KeyboardAvoidingView, TextInput, TouchableOpacity } from 'react-native'
+import { Platform, StyleSheet, Text, View, KeyboardAvoidingView, TextInput, TouchableOpacity, Alert, ActivityIndicator } from 'react-native'
 import React from 'react'
 import { useNavigation } from '@react-navigation/native'
 import { SafeAreaView } from 'react-native-safe-area-context'
+
+
+import api from '../api/config';
 
 
 
@@ -12,6 +15,7 @@ const SignUp = () => {
 
     const [phoneNumber, setPhoneNumber] = useState('');
     const [focusInput, setFocusInput] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     const navigation = useNavigation();
 
@@ -36,7 +40,37 @@ const SignUp = () => {
 
     const attemptSendOTP = () => {
 
-        navigation.navigate('EnterOTP')
+        setIsLoading(true);
+
+        api.post('/accounts/send-otp/', {
+            phone: phoneNumber
+        })
+            .then(response => {
+                if (response.status === 200) {
+                    setIsLoading(false);
+                    navigation.navigate('EnterOTP', { 'phone': phoneNumber });
+                }
+                console.log(response.data);
+                setIsLoading(false);
+
+            })
+
+            .catch(error => {
+                setIsLoading(false);
+                console.log(error)
+
+                if (error.response.data.non_field_errors) {
+                    Alert.alert(error.response.data.non_field_errors[0]);
+                    setIsLoading(false);
+                }
+
+                if (error.response.data.error) {
+                    Alert.alert(error.response.data.error);
+                    setIsLoading(false);
+                }
+
+
+            })
 
     }
 
@@ -81,14 +115,22 @@ const SignUp = () => {
 
                     <TouchableOpacity
                         onPress={attemptSendOTP}
-                        disabled={!phoneIsValid(phoneNumber)}
+                        disabled={!phoneIsValid(phoneNumber) || isLoading}
                     >
                         <View style={[styles.btnContinue,
                         {
-                            backgroundColor: phoneIsValid(phoneNumber) ? '#244db7' : '#8f8f8f'
+                            borderColor: phoneIsValid(phoneNumber) ? '#cf8300' : '#afafaf'
                         }
                         ]}>
-                            <Text style={styles.textContinue}>Send OTP</Text>
+                            {!isLoading && <Text style={[styles.textContinue,
+                            {
+                                color: phoneIsValid(phoneNumber) ? '#cf8300' : '#afafaf'
+                            }
+                            ]}>Send OTP</Text>}
+
+                            {isLoading && <ActivityIndicator size="large" color="#cf8300" />}
+
+
                         </View>
 
                     </TouchableOpacity>
@@ -97,7 +139,7 @@ const SignUp = () => {
                         style={styles.navigateTextContainer}
                         onPress={() => navigation.navigate('Login')}
                     >
-                        <Text style={{ fontSize: 16, color: '#244db7' }}>Already have an account? Login</Text>
+                        <Text style={{ fontSize: 16, color: '#cf8300' }}>Already have an account? Login</Text>
                     </TouchableOpacity>
 
                 </View>
@@ -183,13 +225,15 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#244db7'
+        backgroundColor: '#ffffff',
+        borderWidth: 2,
     },
 
     textContinue: {
         color: '#ffffff',
         alignItems: 'center',
-        fontSize: 18
+        fontSize: 18,
+        fontWeight: 'bold'
     },
 
     navigateTextContainer: {

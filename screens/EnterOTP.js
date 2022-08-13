@@ -1,17 +1,21 @@
-import { Platform, StyleSheet, Text, View, KeyboardAvoidingView, TextInput, TouchableOpacity } from 'react-native'
+import { Platform, StyleSheet, Text, View, KeyboardAvoidingView, TextInput, TouchableOpacity, ActivityIndicator, Alert } from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import { useNavigation } from '@react-navigation/native';
+import api from '../api/config';
 
-const EnterOTP = () => {
+
+
+const EnterOTP = ({ route }) => {
     let textInput = useRef(null);
 
     const lengthOTP = 4;
-    const [internalValue, setInternalValue] = useState('');
+    const [otpValue, setOtpValue] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
+    const [validated, setvalidated] = useState(false);
 
 
-    const onChangeText = (val) => {
-        setInternalValue(val);
-    }
+    const navigation = useNavigation();
 
 
     useEffect(() => {
@@ -19,73 +23,145 @@ const EnterOTP = () => {
     }, []);
 
 
+
+    useEffect(() => {
+        if (validated) {
+            navigation.replace('OTPValidated');
+        }
+    }, [validated])
+
+
+    useEffect(
+        () =>
+            navigation.addListener('beforeRemove', (e) => {
+
+
+                if (!isLoading) {
+
+                    return;
+                }
+
+
+                e.preventDefault();
+            }),
+        [navigation, isLoading]
+    );
+
+
+    const attemptValidateOTP = () => {
+        setIsLoading(true);
+
+        api.post('/accounts/validate-otp/', {
+            phone: route.params.phone, // temporary, later we must use redux to handle this part
+            otp: otpValue
+        })
+            .then(response => {
+                if (response.status === 200) {
+                    setIsLoading(false);
+                    setvalidated(true);
+                }
+
+            })
+
+            .catch(error => {
+                setIsLoading(false);
+
+                if (error.response.data.otp) {
+                    Alert.alert(error.response.data.otp[0]);
+                    setIsLoading(false);
+                }
+
+                if (error.response.data.error) {
+                    Alert.alert(error.response.data.error);
+                    setIsLoading(false);
+                }
+
+            })
+
+    }
+
+    const onChangeText = (val) => {
+        setOtpValue(val);
+    }
+
+
+
+
     return (
-        <SafeAreaView style={styles.container}>
 
-            <KeyboardAvoidingView
-                // keyboardVerticalOffset={50}
-                behavior={Platform.OS === 'ios' ? 'padding' : 'undefined'}
-                style={styles.avoidingContainer}
-            >
+        <>
 
-                <Text style={styles.textTitle}>Enter the OTP sent via SMS</Text>
+            <SafeAreaView style={styles.container}>
 
-                <View>
-                    <TextInput
-                        ref={(input) => textInput = input}
-                        onChangeText={onChangeText}
-                        style={{ opacity: 0, height: 1 }}
-                        value={internalValue}
-                        maxLength={lengthOTP}
-                        keyboardType='numeric'
-                        returnKeyType='done'
+                <KeyboardAvoidingView
+                    // keyboardVerticalOffset={50}
+                    behavior={Platform.OS === 'ios' ? 'padding' : 'undefined'}
+                    style={styles.avoidingContainer}
+                >
 
-                    />
-                    <View style={styles.containerInput}>
-                        {
-                            Array(lengthOTP).fill().map((data, index) => (
-                                <View
-                                    key={index}
-                                    style={styles.cellView}
-                                >
-                                    <Text
-                                        style={styles.cellText}
-                                        onPress={() => textInput.focus()}
-                                    >
-                                        {internalValue && internalValue.length > 0 ? internalValue[index] : ""}
-                                    </Text>
-                                </View>
-                            ))
-                        }
+                    <Text style={styles.textTitle}>Enter the OTP sent via SMS</Text>
+
+                    <View>
+
+                        <View style={styles.containerInput}>
+
+                            <TextInput
+                                ref={(input) => textInput = input}
+                                onChangeText={onChangeText}
+                                editable={!isLoading}
+                                selectTextOnFocus={!isLoading}
+                                style={styles.OTPInput}
+                                value={otpValue}
+                                maxLength={lengthOTP}
+                                keyboardType='numeric'
+                                returnKeyType='done'
+                                onSubmitEditing={attemptValidateOTP}
+
+                            />
+
+
+
+                        </View>
 
                     </View>
-                </View>
 
 
 
 
-                <View style={styles.bottomView}>
-                    <TouchableOpacity>
+                    <View style={styles.bottomView}>
+                        <TouchableOpacity>
 
-                        <View style={styles.btnChangeNumber}>
-                            <Text style={styles.textChange}>Change number</Text>
-                        </View>
+                            <View style={styles.btnChangeNumber}>
+                                <Text style={styles.textChange}>Change number</Text>
+                            </View>
 
-                    </TouchableOpacity>
-                    <TouchableOpacity>
+                        </TouchableOpacity>
+                        <TouchableOpacity>
 
-                        <View style={styles.btnResend}>
-                            <Text style={styles.textResend}>{"Resend OTP (24)"}</Text>
-                        </View>
+                            <View style={styles.btnResend}>
+                                <Text style={styles.textResend}>{"Resend OTP (24)"}</Text>
+                            </View>
 
-                    </TouchableOpacity>
-                </View>
-
-            </KeyboardAvoidingView>
+                        </TouchableOpacity>
+                    </View>
 
 
 
-        </SafeAreaView>
+
+
+                </KeyboardAvoidingView>
+
+
+
+
+            </SafeAreaView>
+
+            {isLoading && <View style={styles.laodingOverlay}>
+
+                <ActivityIndicator size="large" color="#cf8300" />
+
+            </View>}
+        </>
     )
 }
 
@@ -124,23 +200,17 @@ const styles = StyleSheet.create({
 
     },
 
-    cellView: {
-
-        paddingVertical: 10,
-        width: 40,
-        margin: 10,
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderBottomWidth: 1.5
-
-    },
-
-    cellText: {
+    OTPInput: {
+        width: '100%',
+        height: 100,
+        fontSize: 36,
         textAlign: 'center',
-        fontSize: 22,
-        fontWeight: 'bold',
-        color: '#4f4f4f'
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        letterSpacing: 20,
     },
+
+
 
 
 
@@ -163,7 +233,7 @@ const styles = StyleSheet.create({
 
 
     textChange: {
-        color: '#234DB7',
+        color: '#cf8300',
         alignItems: 'center',
         fontSize: 16
     },
@@ -177,10 +247,20 @@ const styles = StyleSheet.create({
 
 
     textResend: {
-        color: '#234DB7',
+        color: '#cf8300',
         alignItems: 'center',
         fontSize: 16
     },
 
+
+    laodingOverlay: {
+        width: '100%',
+        height: '100%',
+        position: 'absolute',
+        backgroundColor: '#cf830025',
+        justifyContent: 'center',
+        alignItems: 'center'
+
+    },
 
 })
