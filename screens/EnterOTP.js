@@ -6,6 +6,7 @@ import api from '../api/config';
 
 
 
+
 const EnterOTP = ({ route }) => {
     let textInput = useRef(null);
 
@@ -13,6 +14,8 @@ const EnterOTP = ({ route }) => {
     const [otpValue, setOtpValue] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [validated, setvalidated] = useState(false);
+    const [otpFilled, setOtpFilled] = useState(false);
+    const [allowBack, setAllowBack] = useState(false);
 
 
     const navigation = useNavigation();
@@ -31,12 +34,30 @@ const EnterOTP = ({ route }) => {
     }, [validated])
 
 
+    useEffect(() => {
+        if (otpFilled) {
+
+            attemptValidateOTP();
+        }
+
+    }, [otpFilled]);
+
+
+    useEffect(() => {
+        if (allowBack) {
+
+            navigation.navigate('SignUp');
+
+        }
+    }, [allowBack])
+
+
     useEffect(
         () =>
             navigation.addListener('beforeRemove', (e) => {
 
 
-                if (!isLoading) {
+                if (allowBack || otpFilled && !isLoading) {
 
                     return;
                 }
@@ -44,7 +65,7 @@ const EnterOTP = ({ route }) => {
 
                 e.preventDefault();
             }),
-        [navigation, isLoading]
+        [navigation, allowBack, otpFilled, isLoading]
     );
 
 
@@ -65,15 +86,20 @@ const EnterOTP = ({ route }) => {
 
             .catch(error => {
                 setIsLoading(false);
+                setOtpValue(null);
+                setOtpFilled(false);
 
                 if (error.response.data.otp) {
                     Alert.alert(error.response.data.otp[0]);
                     setIsLoading(false);
+
                 }
 
                 if (error.response.data.error) {
                     Alert.alert(error.response.data.error);
                     setIsLoading(false);
+
+
                 }
 
             })
@@ -82,6 +108,16 @@ const EnterOTP = ({ route }) => {
 
     const onChangeText = (val) => {
         setOtpValue(val);
+
+        if (val.length === 4) {
+            setOtpFilled(true);
+        }
+    }
+
+
+
+    const handleChangePhoneNumber = () => {
+        setAllowBack(true);
     }
 
 
@@ -108,8 +144,8 @@ const EnterOTP = ({ route }) => {
                             <TextInput
                                 ref={(input) => textInput = input}
                                 onChangeText={onChangeText}
-                                editable={!isLoading}
-                                selectTextOnFocus={!isLoading}
+                                editable={!otpFilled}
+                                selectTextOnFocus={!otpFilled}
                                 style={styles.OTPInput}
                                 value={otpValue}
                                 maxLength={lengthOTP}
@@ -129,7 +165,9 @@ const EnterOTP = ({ route }) => {
 
 
                     <View style={styles.bottomView}>
-                        <TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={(handleChangePhoneNumber)}
+                        >
 
                             <View style={styles.btnChangeNumber}>
                                 <Text style={styles.textChange}>Change number</Text>

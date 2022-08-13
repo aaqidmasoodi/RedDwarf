@@ -41,6 +41,8 @@ const SignUp = () => {
     const attemptSendOTP = () => {
 
         setIsLoading(true);
+        textInput.blur();
+
 
         api.post('/accounts/send-otp/', {
             phone: phoneNumber
@@ -103,6 +105,7 @@ const SignUp = () => {
                         maxLength={10}
                         onFocus={onChangeFocus}
                         onBlur={onChangeBlur}
+                        onSubmitEditing={attemptSendOTP}
 
 
                     />
