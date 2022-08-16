@@ -59,7 +59,8 @@ const Dashboard = () => {
               style={styles.noticeList}
               keyExtractor={(item) => item.id}
               showsHorizontalScrollIndicator={false}
-              horizontal
+              horizontal={false}
+              showsVerticalScrollIndicator={false}
               tyle={styles.noticeObject}
               renderItem={({ item }) => {
                 return (
@@ -113,10 +114,12 @@ const styles = StyleSheet.create({
   },
 
   noticeList: {
+    height: 250,
     marginTop: 10
   },
 
   noticeObject: {
+    borderRadius: 20,
     marginRight: 10,
     width: 300,
     minHeight: 250,
