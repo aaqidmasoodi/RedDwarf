@@ -1,25 +1,42 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React from 'react'
-import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
+import { StyleSheet, Text, TouchableOpacity, View,} from 'react-native'
+import React, {useState, useEffect} from 'react'
+import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
+
+const getLocation = () => {
+  
+}
 
 const Map = () => {
 
   const navigation = useNavigation();
+  const [location, setLocation] = useState({
+    latitude: 34.2306810561,
+    longitude: 74.727365319,
+    latitudeDelta: 0.015,
+    longitudeDelta: 0.0121,
+  });
+
+  // useEffect(() => {
+  //   setInterval(() => {
+
+  //     setLocation({location});
+  //     }, 10000);
+  // }, []);
+
 
   return (
     <View style={styles.container}>
       <MapView
         style={styles.map}
         // provider={PROVIDER_GOOGLE}
-        region={{
-          latitude: 34.23119965611817,
-          longitude: 74.7271553195992,
-          latitudeDelta: 0.015,
-          longitudeDelta: 0.0121,
-        }}
+        region={location}
       >
+        <Marker coordinate={location} style={styles.marker}
+        image = {require('../assets/bus.png')}
+        title={"Bus 6"}
+        />
       </MapView>
 
 

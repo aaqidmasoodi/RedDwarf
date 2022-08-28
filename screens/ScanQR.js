@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import { useNavigation } from '@react-navigation/native';
-import { StyleSheet, Text, View, Button, ActivityIndicator, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View, Button, ActivityIndicator, TouchableOpacity, Image } from 'react-native'
 import { MaterialIcons, Ionicons } from '@expo/vector-icons';
 
 
@@ -22,10 +22,32 @@ const ScanQR = () => {
     }, []);
 
 
-    const handleBarCodeScanned = ({ type, data }) => {
-        setPayload(data);
-        setIsActive(false);
-        // navigation.navigate('Dashboard')
+    const handleBarCodeScanned = async ({ data }) => {
+
+        try{
+
+            if(data.split('?')[0] == 'CUKBUS'){     //check our code only
+                let user = data.split('?')[1];
+                let token = data.split('?')[2];
+
+                let postData = {"user": user, "token" : token}
+        
+            const response = await fetch('https://qr-api-test.herokuapp.com/getData', {
+                method: 'POST',
+                headers: {
+                'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(postData) 
+            });
+            const json = await response.json();
+            setPayload(json);
+            setIsActive(false);
+            // navigation.navigate('Dashboard')
+            }
+        }catch(error){
+            console.log(error);
+        }
+
     };
 
     if (hasPermission === null) {
@@ -40,6 +62,7 @@ const ScanQR = () => {
 
     }
 
+
     return (
         <View style={styles.container}>
             {isActive && (
@@ -48,8 +71,20 @@ const ScanQR = () => {
 
             {!isActive && (
                 <View style={styles.container}>
-                    <MaterialIcons name="verified" size={256} color="darkgreen" />
-                    <Text style={styles.payloadText}>Payload: {payload}</Text>
+                    {/* <MaterialIcons name="verified" size={256} color="darkgreen" /> */}
+                    <Image
+                        style={[styles.tinyLogo, payload.payment_status ? {borderWidth: 5, borderColor: 'green'}:{borderWidth: 5, borderColor: 'red'}]}
+                        source={{
+                        uri: `https://qr-api-test.herokuapp.com${payload.prof_pic}`,
+                        }}
+                    />
+                    <View style={styles.payloadText}>
+                    <Text>Name: {payload.name}</Text>
+                    <Text>Department: {payload.dept}</Text>
+                    <Text>Pickup Point: {payload.pickup_point}</Text>
+                    <Text>Bus No: {payload.bus_no}</Text>
+                    <Text>Enroll No: {payload.enroll_no}</Text>
+                    </View>
                     <View style={styles.bottomBtnsContainer}>
                         <TouchableOpacity
                             onPress={() => setIsActive(true)}
@@ -96,5 +131,14 @@ const styles = StyleSheet.create({
         padding: 20
     },
 
+    tinyLogo: {
+        width: 200,
+        height: 200,
+        borderRadius: 20
+    },
 
+    payloadText:{
+        margin: 10,
+        padding: 10,
+    }
 });

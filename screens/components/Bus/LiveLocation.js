@@ -1,11 +1,14 @@
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
-import React from 'react'
-import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
+import React, { useState } from 'react'
+import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import { useNavigation } from '@react-navigation/native';
 
 const LiveLocation = () => {
 
   const navigation = useNavigation();
+  const [location, setLocation] = useState(true);
+
+
 
   return (
     <TouchableOpacity
@@ -15,6 +18,7 @@ const LiveLocation = () => {
       activeOpacity={0.9}
       onPress={() => navigation.navigate('Map')}
     >
+      <View style={[styles.mapOverlay, location && {backgroundColor : 'steelblue'}]}>
       <View style={styles.smallMapContainer}>
 
         <MapView
@@ -23,18 +27,18 @@ const LiveLocation = () => {
           scrollEnabled={false}
           zoomEnabled={false}
           region={{
-            latitude: 34.23119965611817,
-            longitude: 74.7271553195992,
+            latitude: 34.2306810561,
+            longitude: 74.727365319,
             latitudeDelta: 0.015,
             longitudeDelta: 0.0121,
           }}
         >
+         
         </MapView>
       </View>
 
-      <View style={styles.mapOverlay}>
         <View>
-          <Text style={{ fontWeight: 'bold', fontSize: 16, color: '#6f6f6f' }}>Live location Unavailable</Text>
+          <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'white', textAlign: 'center' }}>{location ? 'Live location available' : 'Live location unavailable'}</Text>
         </View>
       </View>
 
@@ -58,8 +62,7 @@ const styles = StyleSheet.create({
     elevation: 10,
     marginTop: 20,
     backgroundColor: 'white',
-    borderBottomLeftRadius: 20,
-    borderBottomRightRadius: 20,
+    borderRadius: 20,
     width: '100%',
     height: 200,
     elevation: 5,
@@ -82,10 +85,13 @@ const styles = StyleSheet.create({
 
   mapOverlay: {
     flex: 1,
-    backgroundColor: '#ffffff',
-    borderBottomLeftRadius: 20,
-    borderBottomRightRadius: 20,
+    backgroundColor: 'brown',
+    borderRadius: 20,
     padding: 15
 
+  },
+  marker:{
+    width: 50,
+    height: 50
   }
 })

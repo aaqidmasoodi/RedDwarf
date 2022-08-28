@@ -57,9 +57,12 @@ const styles = StyleSheet.create({
 
   viewQRBtn: {
     marginTop: 30,
-    padding: 20,
+    padding: 15,
     fontWeight: '600',
     fontSize: 18,
-    color: '#cf8300'
+    color: '#cf8300',
+    borderColor: '#cf8300',
+    borderWidth: 2,
+    borderRadius: 5,
   }
 });

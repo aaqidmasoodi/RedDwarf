@@ -1,13 +1,15 @@
-import { StyleSheet, Text, View, Image, ScrollView, FlatList } from 'react-native'
+import { StyleSheet, Text, View, Image, ScrollView, FlatList, TextInput, Alert } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import React from 'react'
+import { MaterialIcons, Ionicons } from '@expo/vector-icons';
 
 import TodayView from './components/Dashboard/TodayView';
 import BusInfo from './components/Dashboard/BusInfo';
+import { useState } from 'react';
 
 
 
-const data = [
+let data = [
   {
     id: 1,
     title: 'August bus fee',
@@ -35,7 +37,36 @@ const data = [
   },
 ]
 
+
+const postAlert = async (text) => {
+
+  console.log(text);
+
+    let id = 10 + Math.floor(Math.random() * 10);
+    let title = "New Alert";
+    let body = text;
+
+    let newAlert = {
+      "id": id,
+      "title": title,
+      "body": body,
+    }
+
+    data.unshift(newAlert);
+
+    // navigation.navigate('Dashboard')
+};
+
 const Dashboard = () => {
+
+  const [coordinator, setCoordintor] = useState(true)
+
+  const [alert, setAlert] = useState('');
+
+  const onChangeAlert = (text) => {
+    setAlert(text);
+  }
+
   return (
 
     <SafeAreaView style={styles.container}>
@@ -56,10 +87,11 @@ const Dashboard = () => {
             <FlatList
 
               data={data}
+              nestedScrollEnabled
               style={styles.noticeList}
               keyExtractor={(item) => item.id}
               showsHorizontalScrollIndicator={false}
-              horizontal={false}
+              horizontal={true}
               showsVerticalScrollIndicator={false}
               tyle={styles.noticeObject}
               renderItem={({ item }) => {
@@ -74,7 +106,15 @@ const Dashboard = () => {
               }}
 
             />
+{ coordinator &&
 
+            <TextInput
+            style={styles.alert}
+            placeholder={'Send Alert'}
+            onChangeText={onChangeAlert}
+            onSubmitEditing={() => postAlert(alert)}
+            />
+}
 
           </View>
 
@@ -132,7 +172,16 @@ const styles = StyleSheet.create({
     borderBottomColor: '#afafaf',
     borderLeftColor: '#6f6f6f'
 
+  },
+  alert:{
+    textAlign: 'center',
+    borderWidth: 2,
+    borderColor: 'grey',
+    marginTop: 10,
+    borderRadius: 5,
+    padding: 10,
   }
+
 
 });
 
