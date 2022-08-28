@@ -3,12 +3,13 @@ import { ImageBackground, StyleSheet, Text, View, Image, TouchableOpacity } from
 import { DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer'
 import { Ionicons } from '@expo/vector-icons'
 
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../../redux/slices/rootSlice';
 
 
 const CustomDrawer = (props) => {
 
+    const user = useSelector(state => state.root.user);
 
     const dispatch = useDispatch();
     return (
@@ -21,8 +22,8 @@ const CustomDrawer = (props) => {
 
                     <Image source={require("../../assets/app/profile_photo.jpeg")} style={styles.drawerProfilePicture} />
 
-                    <Text style={styles.drawerUsername}>Aaqid Masoodi</Text>
-                    <Text style={styles.drawerPhoneNumber}>+91 9797 944597</Text>
+                    <Text style={styles.drawerUsername}>{user.name}</Text>
+                    <Text style={styles.drawerPhoneNumber}>+91 {user.phone}</Text>
 
                 </ImageBackground>
 

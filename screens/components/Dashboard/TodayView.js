@@ -1,13 +1,17 @@
 import { StyleSheet, Text, View, Image } from 'react-native'
 import React from 'react'
 
-
+import { useSelector } from 'react-redux'
 
 const TodayView = () => {
+
+    const user = useSelector(state => state.root.user)
+    const firstName = user.name.split(" ")[0]
+
     return (
         <View style={styles.todayContainer}>
             <View>
-                <Text style={styles.greetText}>Hi, Aaqid</Text>
+                <Text style={styles.greetText}>Hi, {firstName}</Text>
             </View>
             <Image
                 style={styles.dashboardPhoto}

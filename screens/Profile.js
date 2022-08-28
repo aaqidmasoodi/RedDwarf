@@ -1,11 +1,16 @@
 import { StyleSheet, Text, View, Image } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import React from 'react'
+import { useSelector } from 'react-redux';
 
 
 
 
 const Profile = () => {
+
+  const user = useSelector(state => state.root.user)
+
+
   return (
     <SafeAreaView style={styles.container}>
 
@@ -17,8 +22,8 @@ const Profile = () => {
           source={require('../assets/app/profile_photo.jpeg')}
         />
         <View style={styles.profileHeaderInner}>
-          <Text style={styles.profileName}>Aaqid Masoodi</Text>
-          <Text style={styles.profileContact}>+91 {'9797 944597'}</Text>
+          <Text style={styles.profileName}>{user.name}</Text>
+          <Text style={styles.profileContact}>+91 {user.phone}</Text>
         </View>
 
       </View>

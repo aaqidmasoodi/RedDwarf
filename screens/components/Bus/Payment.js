@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TouchableOpacity, Alert } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, Alert, ActivityIndicator } from 'react-native'
 import React, { useState } from 'react'
 import { useStripe } from '@stripe/stripe-react-native'
 import * as Animatable from 'react-native-animatable';
@@ -7,6 +7,8 @@ const AnimatedTouchable = Animatable.createAnimatableComponent(TouchableOpacity)
 const Payment = (props) => {
 
   const stripe = useStripe();
+
+  console.log(BASE_URL);
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -62,7 +64,7 @@ const Payment = (props) => {
 
   return (
     <AnimatedTouchable
-      animation={'pulse'}
+      animation={!isLoading ? 'pulse' : null}
       duration={500}
       iterationCount='infinite'
       iterationDelay={5000}
@@ -72,7 +74,8 @@ const Payment = (props) => {
       disabled={isLoading}
       useNativeDriver
     >
-      <Text style={{ fontSize: 22, fontWeight: '600', color: '#cf8300' }}>₹ Pay</Text>
+      {!isLoading && <Text style={{ fontSize: 22, fontWeight: '600', color: '#cf8300' }}>₹ Pay</Text>}
+      {isLoading && <ActivityIndicator size="large" color="#cf8300" />}
     </AnimatedTouchable>
   )
 }

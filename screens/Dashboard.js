@@ -7,6 +7,7 @@ import BusInfo from './components/Dashboard/BusInfo';
 
 
 
+
 const data = [
   {
     id: 1,
@@ -36,6 +37,8 @@ const data = [
 ]
 
 const Dashboard = () => {
+
+
   return (
 
     <SafeAreaView style={styles.container}>
@@ -73,6 +76,8 @@ const Dashboard = () => {
               }}
 
             />
+
+
 
 
           </View>
