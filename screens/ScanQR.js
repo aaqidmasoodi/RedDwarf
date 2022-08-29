@@ -86,6 +86,23 @@ const ScanQR = () => {
                                 ]
                             );
                         }
+
+                        else {
+
+                            Alert.alert(
+                                "Fatal error",
+                                "Something Went wrong. Try again later!",
+                                [
+                                    {
+                                        text: "Go Back",
+                                        onPress: handleGoBack,
+                                        style: "cancel"
+                                    },
+                                    { text: "Try again", onPress: () => setScanned(false) }
+                                ]
+                            );
+
+                        }
                     })
 
             }
