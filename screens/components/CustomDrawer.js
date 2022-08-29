@@ -9,7 +9,12 @@ import { logout } from '../../redux/slices/rootSlice';
 
 const CustomDrawer = (props) => {
 
-    const user = useSelector(state => state.root.user);
+    const user = useSelector(state => state.root.user)
+
+    const userFullName = user ? user.name : null;
+    const userPhone = user ? user.phone : null;
+
+
 
     const dispatch = useDispatch();
     return (
@@ -22,8 +27,8 @@ const CustomDrawer = (props) => {
 
                     <Image source={require("../../assets/app/profile_photo.jpeg")} style={styles.drawerProfilePicture} />
 
-                    <Text style={styles.drawerUsername}>{user.name}</Text>
-                    <Text style={styles.drawerPhoneNumber}>+91 {user.phone}</Text>
+                    <Text style={styles.drawerUsername}>{userFullName}</Text>
+                    <Text style={styles.drawerPhoneNumber}>+91 {userPhone}</Text>
 
                 </ImageBackground>
 

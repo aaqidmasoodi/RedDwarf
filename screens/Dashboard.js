@@ -45,7 +45,7 @@ const Dashboard = () => {
       <ScrollView>
         <View style={styles.contentContainer}>
           <TodayView />
-          <BusInfo />
+          {/* <BusInfo /> */}
 
           <View style={styles.noticeListContainer}>
 

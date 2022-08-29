@@ -4,17 +4,17 @@ import React from 'react'
 import { useSelector } from 'react-redux';
 
 
-
-
 const Profile = () => {
 
   const user = useSelector(state => state.root.user)
+
+  const userFullName = user ? user.name : null;
+  const userPhone = user ? user.phone : null;
 
 
   return (
     <SafeAreaView style={styles.container}>
 
-      {/* Header */}
 
       <View style={styles.profileHeaderContainer}>
         <Image
@@ -22,13 +22,11 @@ const Profile = () => {
           source={require('../assets/app/profile_photo.jpeg')}
         />
         <View style={styles.profileHeaderInner}>
-          <Text style={styles.profileName}>{user.name}</Text>
-          <Text style={styles.profileContact}>+91 {user.phone}</Text>
+          <Text style={styles.profileName}>{userFullName}</Text>
+          <Text style={styles.profileContact}>+91 {userPhone}</Text>
         </View>
 
       </View>
-
-
 
 
     </SafeAreaView>

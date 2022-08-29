@@ -2,12 +2,17 @@ import { Platform, StyleSheet, Text, View, KeyboardAvoidingView, TextInput, Touc
 import React, { useEffect, useRef, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useNavigation } from '@react-navigation/native';
+import { setUserPhone } from '../redux/slices/signupSlice';
+import { useDispatch } from 'react-redux';
 import api from '../api/config';
 
 
 
 
 const EnterOTP = ({ route }) => {
+
+
+    const dispatch = useDispatch();
     let textInput = useRef(null);
 
     const lengthOTP = 4;
@@ -117,6 +122,7 @@ const EnterOTP = ({ route }) => {
 
 
     const handleChangePhoneNumber = () => {
+        dispatch(setUserPhone(null));
         setAllowBack(true);
     }
 

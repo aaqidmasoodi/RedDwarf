@@ -12,7 +12,6 @@ const ScanQR = () => {
 
     const navigation = useNavigation();
 
-
     useEffect(() => {
         (async () => {
             const { status } = await BarCodeScanner.requestPermissionsAsync();
@@ -25,7 +24,7 @@ const ScanQR = () => {
     const handleBarCodeScanned = ({ type, data }) => {
         setPayload(data);
         setIsActive(false);
-        // navigation.navigate('Dashboard')
+
     };
 
     if (hasPermission === null) {

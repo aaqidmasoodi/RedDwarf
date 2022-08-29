@@ -3,13 +3,17 @@ import { Platform, StyleSheet, Text, View, KeyboardAvoidingView, TextInput, Touc
 import React from 'react'
 import { useNavigation } from '@react-navigation/native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-
+import { useDispatch } from 'react-redux';
+import { setUserPhone } from '../redux/slices/signupSlice'
 
 import api from '../api/config';
 
 
 
 const SignUp = () => {
+
+
+    const dispatch = useDispatch();
 
     let textInput = useRef(null);
 
@@ -50,6 +54,7 @@ const SignUp = () => {
             .then(response => {
                 if (response.status === 200) {
                     setIsLoading(false);
+                    dispatch(setUserPhone(phoneNumber));
                     navigation.navigate('EnterOTP', { 'phone': phoneNumber });
                 }
                 console.log(response.data);

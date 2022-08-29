@@ -3,5 +3,8 @@ import axios from 'axios';
 export const BASE_URL = 'https://cukbrs.herokuapp.com/api';
 
 export default axios.create({
-    baseURL: BASE_URL
+    baseURL: BASE_URL,
+    timeout: 50000
 })
+
+

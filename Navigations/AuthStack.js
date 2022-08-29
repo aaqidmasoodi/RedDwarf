@@ -3,6 +3,10 @@ import Login from '../screens/Login'
 import SignUp from '../screens/SignUp'
 import EnterOTP from '../screens/EnterOTP'
 import OTPValidated from '../screens/OTPValidated'
+import Register from '../screens/Register'
+import AccountCreated from '../screens/AccountCreated'
+
+
 
 const AuthStack = (Stack) => {
     return (
@@ -36,6 +40,24 @@ const AuthStack = (Stack) => {
             <Stack.Screen
                 name='OTPValidated'
                 component={OTPValidated}
+                options={{
+                    gestureEnabled: false,
+                    headerShown: false
+                }}
+            />
+
+            <Stack.Screen
+                name='Register'
+                component={Register}
+                options={{
+                    gestureEnabled: false,
+                    headerShown: false
+                }}
+            />
+
+            <Stack.Screen
+                name='AccountCreated'
+                component={AccountCreated}
                 options={{
                     gestureEnabled: false,
                     headerShown: false

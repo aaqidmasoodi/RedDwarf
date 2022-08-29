@@ -5,8 +5,9 @@ import { useSelector } from 'react-redux'
 
 const TodayView = () => {
 
+
     const user = useSelector(state => state.root.user)
-    const firstName = user.name.split(" ")[0]
+    const firstName = user ? user.name.split(" ")[0] : null
 
     return (
         <View style={styles.todayContainer}>
