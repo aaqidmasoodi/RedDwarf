@@ -51,6 +51,7 @@ const DrawerStack = () => {
                 }}
             />
 
+
             <Drawer.Screen
                 name="Settings"
                 component={Settings}
@@ -58,6 +59,8 @@ const DrawerStack = () => {
                     headerShown: false,
                 }}
             />
+
+
             <Drawer.Screen
                 name="ScanQR"
                 component={ScanQR}

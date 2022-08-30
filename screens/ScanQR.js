@@ -2,11 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import { useNavigation } from '@react-navigation/native';
 import { StyleSheet, Text, View, Button, ActivityIndicator, TouchableOpacity, Alert, ScrollView, Image } from 'react-native'
-import { MaterialIcons, Ionicons, Entypo, MaterialCommunityIcons } from '@expo/vector-icons';
+import { Ionicons, Entypo, MaterialCommunityIcons, AntDesign } from '@expo/vector-icons';
 import api from '../api/config';
 import { useSelector } from 'react-redux';
 import * as Animatable from 'react-native-animatable';
+
+
 const AnimatedIonicons = Animatable.createAnimatableComponent(Ionicons);
+const AnimatedMaterialCommunityIcons = Animatable.createAnimatableComponent(MaterialCommunityIcons);
 
 const ScanQR = () => {
     const [hasPermission, setHasPermission] = useState(null);
@@ -20,13 +23,13 @@ const ScanQR = () => {
         (async () => {
             const { status } = await BarCodeScanner.requestPermissionsAsync();
             setHasPermission(status === 'granted');
-            // setIsActive(true);
         })();
 
     }, []);
 
-    const handleTorch = () => {
-        console.log('Torch.')
+    const handleBack = () => {
+        setIsActive(false);
+        setScanned(false);
     };
 
 
@@ -146,17 +149,16 @@ const ScanQR = () => {
                             animation={!scanned ? 'pulse' : null}
                             duration={1500}
                             iterationCount='infinite'
-                            // iterationDelay={1000}
                             useNativeDriver
                             style={styles.qrScanArea}
                             name="scan-outline" size={256}
                             color="#cf830075" />
 
 
-                        <TouchableOpacity style={styles.toggleFlashLightBtnContainer}
-                            onPress={handleTorch}
+                        <TouchableOpacity style={styles.toggleBackBtnContainer}
+                            onPress={handleBack}
                         >
-                            <Entypo name="light-up" size={30} color="#ffffff" />
+                            <AntDesign name="close" size={30} color="#ffffff" />
 
                         </TouchableOpacity>
                     </>}
@@ -167,10 +169,6 @@ const ScanQR = () => {
 
                         </View>
                     </>}
-
-
-
-
 
                 </View>
             )}
@@ -183,7 +181,14 @@ const ScanQR = () => {
                             {'Securely scan & validate all payments'}
                         </Text>
                     </View>
-                    <MaterialCommunityIcons name="qrcode-scan" size={128} color="#cf8300" />
+                    <AnimatedMaterialCommunityIcons
+                        animation={!scanned ? 'pulse' : null}
+                        duration={1500}
+                        iterationCount='infinite'
+                        useNativeDriver
+                        name="qrcode-scan"
+                        size={128}
+                        color="#cf8300" />
                     <TouchableOpacity
                         style={styles.startScanbtn}
                         onPress={() => setIsActive(true)}
@@ -288,7 +293,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
 
-    toggleFlashLightBtnContainer: {
+    toggleBackBtnContainer: {
         backgroundColor: '#00000080',
         borderRadius: 30,
         padding: 15,
