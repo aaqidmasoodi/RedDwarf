@@ -20,7 +20,9 @@ const QR = () => {
         catch (error){
             console.log(error);
         } finally {
-            setLoading(false)
+            setTimeout(() => {
+                setLoading(false);
+            },2000)
         }
     }
 
@@ -35,7 +37,7 @@ const QR = () => {
         <SafeAreaView style={styles.container}>
             {
                 loading ? <><ActivityIndicator size="large" color="#cf8300" /> 
-                <Text>Loading</Text>
+                <Text>Await a minute...</Text>
                  </> :
             <View style={styles.container}>
             <QRCode
@@ -43,6 +45,8 @@ const QR = () => {
                 size={250}
                 color="black"
                 backgroundColor="white"
+                logo={require('../assets/bus.png')}
+                logoSize={30}
                 />
             <TouchableOpacity style={styles.btn} onPress={() => navigation.navigate('QRCode')}>
                 <Text style={styles.btntxt}>Back</Text>

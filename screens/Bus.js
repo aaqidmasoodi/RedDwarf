@@ -1,7 +1,6 @@
-import { StyleSheet, Text, TouchableOpacity, View, ScrollView } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, View, ScrollView, Linking } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import React from 'react'
-
 
 import BusBasicInfo from './components/Bus/BusBasicInfo';
 import SeatInfo from './components/Bus/SeatInfo';
@@ -37,7 +36,9 @@ const Dashboard = () => {
               <Text style={{ fontSize: 18, fontWeight: '600', color: '#4f4f4f' }}>Mr. {'Adeeb Rahman'}</Text>
             </View>
 
-            <TouchableOpacity style={styles.driverNumber}>
+            <TouchableOpacity style={styles.driverNumber}
+              onPress={() => Linking.openURL(`tel:919797944597`)}
+            >
               <Text style={{ color: '#cf8300', fontWeight: '600' }}>Call {'+91 9797 944597'}</Text>
             </TouchableOpacity>
 

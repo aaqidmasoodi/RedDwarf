@@ -9,7 +9,7 @@ const ScanQR = () => {
     const [hasPermission, setHasPermission] = useState(null);
     const [isActive, setIsActive] = useState(true);
     const [payload, setPayload] = useState('');
-
+    const [loading, setLoading] = useState(false);
     const navigation = useNavigation();
 
 
@@ -27,6 +27,9 @@ const ScanQR = () => {
         try{
 
             if(data.split('?')[0] == 'CUKBUS'){     //check our code only
+                setIsActive(false);
+                setLoading(true);
+
                 let user = data.split('?')[1];
                 let token = data.split('?')[2];
 
@@ -40,8 +43,10 @@ const ScanQR = () => {
                 body: JSON.stringify(postData) 
             });
             const json = await response.json();
+            setTimeout(() => {
+                setLoading(false);
+            },2000)
             setPayload(json);
-            setIsActive(false);
             // navigation.navigate('Dashboard')
             }
         }catch(error){
@@ -49,6 +54,15 @@ const ScanQR = () => {
         }
 
     };
+
+
+    if (loading === true) {
+        return <View style={styles.container}>
+            <ActivityIndicator size="large" />
+            <Text>Await a minute...</Text>
+
+        </View>
+    }
 
     if (hasPermission === null) {
         return <View style={styles.container}>
@@ -70,20 +84,21 @@ const ScanQR = () => {
             )}
 
             {!isActive && (
-                <View style={styles.container}>
+                <View style={styles.containerDetails}>
                     {/* <MaterialIcons name="verified" size={256} color="darkgreen" /> */}
                     <Image
-                        style={[styles.tinyLogo, payload.payment_status ? {borderWidth: 5, borderColor: 'green'}:{borderWidth: 5, borderColor: 'red'}]}
+                        style={[styles.tinyLogo, !payload.payment_status ? {borderWidth: 5, borderColor: 'green'}:{borderWidth: 5, borderColor: 'red'}]}
                         source={{
                         uri: `https://qr-api-test.herokuapp.com${payload.prof_pic}`,
                         }}
                     />
                     <View style={styles.payloadText}>
-                    <Text>Name: {payload.name}</Text>
-                    <Text>Department: {payload.dept}</Text>
-                    <Text>Pickup Point: {payload.pickup_point}</Text>
-                    <Text>Bus No: {payload.bus_no}</Text>
-                    <Text>Enroll No: {payload.enroll_no}</Text>
+                        <Text style={styles.studetails}>Student Details:</Text>
+                        <Text style={styles.textContent}>Name: {payload.name}</Text>
+                        <Text style={styles.textContent}>Department: {payload.dept}</Text>
+                        <Text style={styles.textContent}>Pickup Point: {payload.pickup_point}</Text>
+                        <Text style={styles.textContent}>Bus No: {payload.bus_no}</Text>
+                        <Text style={styles.textContent}>Enroll No: {payload.enroll_no}</Text>
                     </View>
                     <View style={styles.bottomBtnsContainer}>
                         <TouchableOpacity
@@ -92,7 +107,10 @@ const ScanQR = () => {
                             <Ionicons name="scan-sharp" size={36} color="#6f6f6f" />
                         </TouchableOpacity>
                         <TouchableOpacity
-                            onPress={() => navigation.navigate('Dashboard')}
+                            onPress={() => {
+                                setIsActive(true);
+                                navigation.navigate('Dashboard')}
+                            }
                             style={styles.bottomBtn}>
                             <Ionicons name="home-sharp" size={36} color="#6f6f6f" />
                         </TouchableOpacity>
@@ -112,17 +130,17 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
     },
 
     viewport: {
         height: '100%',
-        width: '100%'
+        width: '150%'
     },
 
     bottomBtnsContainer: {
         flexDirection: 'row',
-        marginTop: 100
+        marginTop: 50
     },
 
 
@@ -134,11 +152,28 @@ const styles = StyleSheet.create({
     tinyLogo: {
         width: 200,
         height: 200,
-        borderRadius: 20
+        borderRadius: 100
     },
 
     payloadText:{
         margin: 10,
         padding: 10,
-    }
+    }, 
+    textContent:{
+        fontStyle: 'italic',
+        fontSize: 15,
+        fontWeight: '500',
+        color: '#4f4f4f'
+    }, 
+    studetails:{
+        fontSize: 20,
+        margin: 20,
+        textAlign: 'left'
+    },
+    containerDetails: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 70,
+    },
 });

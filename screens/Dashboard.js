@@ -38,30 +38,35 @@ let data = [
 ]
 
 
-const postAlert = async (text) => {
 
-  console.log(text);
-
-    let id = 10 + Math.floor(Math.random() * 10);
-    let title = "New Alert";
-    let body = text;
-
-    let newAlert = {
-      "id": id,
-      "title": title,
-      "body": body,
-    }
-
-    data.unshift(newAlert);
-
-    // navigation.navigate('Dashboard')
-};
 
 const Dashboard = () => {
 
   const [coordinator, setCoordintor] = useState(true)
 
   const [alert, setAlert] = useState('');
+
+  const postAlert = async (text) => {
+    if(text){
+  
+    console.log(text);
+  
+      let id = 10 + Math.floor(Math.random() * 100);
+      let title = Date().split('GMT')[0];
+      let body = text;
+  
+      let newAlert = {
+        "id": id,
+        "title": title,
+        "body": body,
+      }
+  
+      data.unshift(newAlert);
+      setAlert('');
+    }
+  
+      // navigation.navigate('Dashboard')
+  };
 
   const onChangeAlert = (text) => {
     setAlert(text);
@@ -79,7 +84,12 @@ const Dashboard = () => {
 
             <View>
               <Text style={styles.noticeListHeader}>Alerts</Text>
-
+              <View
+                style={{
+                  borderBottomColor: 'black',
+                  borderBottomWidth: 1,
+                }}
+              />
 
             </View>
 
@@ -91,15 +101,15 @@ const Dashboard = () => {
               style={styles.noticeList}
               keyExtractor={(item) => item.id}
               showsHorizontalScrollIndicator={false}
-              horizontal={true}
-              showsVerticalScrollIndicator={false}
+              horizontal={false}
+              showsVerticalScrollIndicator={true}
               tyle={styles.noticeObject}
               renderItem={({ item }) => {
                 return (
 
                   <View style={styles.noticeObject}>
-                    <Text style={{ fontWeight: 'bold', fontSize: 18, color: '#3f3f3f' }}>{item.title}</Text>
-                    <Text style={{ fontSize: 16, marginTop: 5, color: '#6f6f6f' }}>{item.body}</Text>
+                    <Text style={{ fontWeight: 'bold', fontSize: 16, color: '#3f3f3f', textAlign: 'center' }}>{item.title}</Text>
+                    <Text style={{ fontSize: 14, marginTop: 5, color: '#6f6f6f', textAlign:'center', fontStyle:'italic' }}>{item.body}</Text>
                   </View>
                 )
 
@@ -107,8 +117,8 @@ const Dashboard = () => {
 
             />
 { coordinator &&
-
             <TextInput
+            value={alert}
             style={styles.alert}
             placeholder={'Send Alert'}
             onChangeText={onChangeAlert}
@@ -139,6 +149,8 @@ const styles = StyleSheet.create({
   contentContainer: {
     height: '100%',
     padding: 20,
+    paddingBottom: 20,
+    marginBottom: 20
   },
 
   noticeListContainer: {
@@ -148,6 +160,7 @@ const styles = StyleSheet.create({
 
 
   noticeListHeader: {
+    textAlign: 'center',
     fontSize: 22,
     fontWeight: 'bold',
     color: '#4f4f4f'
@@ -155,31 +168,36 @@ const styles = StyleSheet.create({
 
   noticeList: {
     height: 250,
-    marginTop: 10
+    marginTop: 10,
+    
   },
 
   noticeObject: {
     borderRadius: 20,
-    marginRight: 10,
+    margin: 5,
     width: 300,
-    minHeight: 250,
     backgroundColor: '#ffffff',
     padding: 20,
+    borderBottomColor:'yellow',
+    borderTopColor: 'red',
+    borderLeftColor: 'blue',
+    borderRightColor: 'green',
     borderWidth: 1,
-    borderLeftWidth: 5,
-    borderTopColor: '#afafaf',
-    borderRightColor: '#afafaf',
-    borderBottomColor: '#afafaf',
-    borderLeftColor: '#6f6f6f'
+    elevation: 10,
 
   },
   alert:{
     textAlign: 'center',
     borderWidth: 2,
     borderColor: 'grey',
-    marginTop: 10,
+    margin: 10,
     borderRadius: 5,
     padding: 10,
+    flexDirection: 'row', 
+    alignItems: 'center',
+  },
+  input:{
+    flex: 1,
   }
 
 

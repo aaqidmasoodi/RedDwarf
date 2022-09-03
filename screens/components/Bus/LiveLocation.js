@@ -1,14 +1,26 @@
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
-import React, { useState } from 'react'
+import { StyleSheet, Text, View, TouchableOpacity, ActivityIndicator } from 'react-native'
+import React, { useState, useEffect } from 'react'
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import { useNavigation } from '@react-navigation/native';
 
 const LiveLocation = () => {
 
   const navigation = useNavigation();
-  const [location, setLocation] = useState(true);
+  const [status, setStatus] = useState(false);
 
-
+  const sharingLocation = async () => {
+    const response = await fetch('https://qr-api-test.herokuapp.com/locationSharing?bus=5', {
+        method: 'GET',
+    });
+    
+    const status = await response.json();
+    setStatus(status.sharing);
+  }
+  
+  useEffect(() => {
+    sharingLocation();
+  }, [])
+  
 
   return (
     <TouchableOpacity
@@ -18,7 +30,6 @@ const LiveLocation = () => {
       activeOpacity={0.9}
       onPress={() => navigation.navigate('Map')}
     >
-      <View style={[styles.mapOverlay, location && {backgroundColor : 'steelblue'}]}>
       <View style={styles.smallMapContainer}>
 
         <MapView
@@ -27,18 +38,23 @@ const LiveLocation = () => {
           scrollEnabled={false}
           zoomEnabled={false}
           region={{
-            latitude: 34.2306810561,
-            longitude: 74.727365319,
+            latitude: 34.23119965611817,
+            longitude: 74.7271553195992,
             latitudeDelta: 0.015,
             longitudeDelta: 0.0121,
           }}
         >
-         
         </MapView>
       </View>
 
+      <View style={[styles.mapOverlay, status && {backgroundColor: 'blue'}]}>
         <View>
-          <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'white', textAlign: 'center' }}>{location ? 'Live location available' : 'Live location unavailable'}</Text>
+          {
+            status ?
+            <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'white', textAlign:'center' }}>Real-time location available</Text>
+            :
+            <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'white', textAlign: 'center' }}>Real-time location unavailable</Text>
+          }
         </View>
       </View>
 
@@ -62,10 +78,14 @@ const styles = StyleSheet.create({
     elevation: 10,
     marginTop: 20,
     backgroundColor: 'white',
-    borderRadius: 20,
+    borderBottomLeftRadius: 20,
+    borderBottomRightRadius: 20,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
     width: '100%',
     height: 200,
     elevation: 5,
+    overflow: 'hidden'
 
 
   },
@@ -85,13 +105,10 @@ const styles = StyleSheet.create({
 
   mapOverlay: {
     flex: 1,
-    backgroundColor: 'brown',
-    borderRadius: 20,
-    padding: 15
-
-  },
-  marker:{
-    width: 50,
-    height: 50
+    backgroundColor: '#ffffff',
+    borderBottomLeftRadius: 20,
+    borderBottomRightRadius: 20,
+    padding: 15,
+    backgroundColor: 'grey'
   }
 })
