@@ -7,10 +7,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import * as SecureStore from 'expo-secure-store';
 const Stack = createStackNavigator();
 
-import { setToken, setUser } from '../redux/slices/rootSlice';
+import { setToken, setUser, setIsLoading } from '../redux/slices/rootSlice';
 import { ActivityIndicator, Alert, View } from 'react-native';
-
-
+import api from '../api/config';
 
 const Route = () => {
 
@@ -20,9 +19,27 @@ const Route = () => {
         try {
 
             let token = await SecureStore.getItemAsync('token');
-            let user = await SecureStore.getItemAsync('user')
-            dispatch(setToken(token));
-            dispatch(setUser(JSON.parse(user)));
+
+            if (token) {
+
+                api.get('/accounts/user-info/', {
+                    headers: { Authorization: `Token ${token}` }
+                })
+                    .then(res => {
+                        dispatch(setToken(token));
+                        dispatch(setUser(res.data));
+                    })
+                    .catch(e => {
+                        console.log(e.response)
+                    })
+
+
+            } else {
+                dispatch(setToken(token));
+                dispatch(setIsLoading(false));
+
+            }
+
 
 
         } catch {

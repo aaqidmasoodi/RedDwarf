@@ -2,14 +2,30 @@ import { StyleSheet, Text, View, Image } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import React from 'react'
 import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { useNavigation } from '@react-navigation/native';
 
 
 const Profile = () => {
 
   const user = useSelector(state => state.root.user)
 
+  const navigation = useNavigation();
+
   const userFullName = user ? user.name : null;
   const userPhone = user ? user.phone : null;
+  const userProfilePhoto = user ? user.profile.profile_picture : null;
+
+
+  useEffect(() => {
+    const log = navigation.addListener('focus', () => {
+      console.log("Hello World")
+    });
+
+    // Return the function to unsubscribe from the event so it gets removed on unmount
+    return log;
+  }, [navigation]);
+
 
 
   return (
@@ -19,7 +35,9 @@ const Profile = () => {
       <View style={styles.profileHeaderContainer}>
         <Image
           style={styles.profilePhoto}
-          source={require('../assets/app/profile_photo.jpeg')}
+          source={{
+            uri: userProfilePhoto,
+          }}
         />
         <View style={styles.profileHeaderInner}>
           <Text style={styles.profileName}>{userFullName}</Text>

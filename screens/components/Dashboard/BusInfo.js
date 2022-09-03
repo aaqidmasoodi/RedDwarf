@@ -4,6 +4,8 @@ import * as Animatable from 'react-native-animatable';
 import { Ionicons } from '@expo/vector-icons';
 
 
+
+
 const BusInfo = () => {
     return (
         <Animatable.View style={[styles.busInfoContainer,

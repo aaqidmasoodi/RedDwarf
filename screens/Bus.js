@@ -6,49 +6,41 @@ import React from 'react'
 import BusBasicInfo from './components/Bus/BusBasicInfo';
 import SeatInfo from './components/Bus/SeatInfo';
 import LiveLocation from './components/Bus/LiveLocation';
+import DriverInfo from './components/Bus/DriverInfo';
+
+import SelectBusComponent from './components/SelectBusComponent';
+import { useSelector } from 'react-redux';
+
+import { Ionicons } from '@expo/vector-icons';
+
 
 
 
 const Dashboard = () => {
 
 
+  const user = useSelector(state => state.root.user);
+  const bus = user ? user.bus : null;
+
+
   return (
 
     <SafeAreaView style={styles.container}>
 
-
-
-
-      <ScrollView>
+      {bus && <ScrollView>
         <View style={styles.contentContainer}>
-
 
           <BusBasicInfo />
           <SeatInfo />
           <LiveLocation />
-
-
-
-
-          <View style={styles.driverContainer}>
-
-            <View style={styles.driverContainerHeader}>
-              <Text style={{ fontSize: 22, fontWeight: 'bold', color: '#6f6f6f' }}>Driver</Text>
-              <Text style={{ fontSize: 18, fontWeight: '600', color: '#4f4f4f' }}>Mr. {'Adeeb Rahman'}</Text>
-            </View>
-
-            <TouchableOpacity style={styles.driverNumber}>
-              <Text style={{ color: '#cf8300', fontWeight: '600' }}>Call {'+91 9797 944597'}</Text>
-            </TouchableOpacity>
-
-          </View>
-
-
-
+          <DriverInfo />
 
         </View>
-      </ScrollView>
+      </ScrollView>}
 
+      {!bus &&
+        <SelectBusComponent />
+      }
 
     </SafeAreaView>
   )
@@ -68,26 +60,45 @@ const styles = StyleSheet.create({
     padding: 20,
   },
 
-  driverContainer: {
-    marginTop: 20,
-  },
-
-  driverContainerHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center'
-  },
-
-
-  driverNumber: {
-    marginTop: 10,
-    padding: 10,
-    borderWidth: 2,
-    borderColor: '#cf8300',
-    borderRadius: 20,
+  flexFullView: {
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center'
-  }
+  },
+
+  flexFullView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+
+
+  noBusHeader: {
+    fontSize: 24,
+    color: '#4f4f4f',
+    fontWeight: '600',
+    marginVertical: 10,
+  },
+
+  noBusBody: {
+    width: '80%',
+    textAlign: 'center',
+    color: '#6f6f6f',
+    fontSize: 16,
+    fontWeight: '400'
+
+  },
+
+  chooseBusBtn: {
+    marginVertical: 30,
+    minWidth: 150,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+    borderRadius: 10
+  },
+
+
 
 
 });

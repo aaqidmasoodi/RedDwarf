@@ -1,8 +1,10 @@
 import React from 'react'
 import Map from '../screens/Map';
 import QR from '../screens/QR';
-
+import SelectBus from '../screens/SelectBus';
 import DrawerStack from './DrawerStack';
+import BusChanged from '../screens/BusChanged';
+
 
 const MainStack = (Stack) => {
     return (
@@ -23,7 +25,6 @@ const MainStack = (Stack) => {
                 }}
             />
 
-
             <Stack.Screen
                 name='QR'
                 component={QR}
@@ -31,6 +32,23 @@ const MainStack = (Stack) => {
                     headerShown: false
                 }}
             />
+
+            <Stack.Screen
+                name='SelectBus'
+                component={SelectBus}
+                options={{
+                    headerShown: false
+                }}
+            />
+
+            <Stack.Screen
+                name='BusChanged'
+                component={BusChanged}
+                options={{
+                    headerShown: false
+                }}
+            />
+
 
 
         </>

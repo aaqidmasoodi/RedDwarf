@@ -4,11 +4,18 @@ import { Ionicons } from '@expo/vector-icons';
 import { StripeProvider } from '@stripe/stripe-react-native';
 import Payment from './Payment';
 import { STRIPE_PUBLISHABLE_KEY } from '@env';
+import { useSelector } from 'react-redux';
 
 
 const SeatInfo = () => {
 
   const [active, setActive] = useState(false);
+
+  const user = useSelector(state => state.root.user);
+
+  const bus = user ? user.bus : null;
+
+  const busSeats = bus ? bus.seats : null;
 
   return (
 
@@ -20,17 +27,17 @@ const SeatInfo = () => {
 
         <View style={styles.seatCountContainer}>
           <Text style={styles.seatCountLabel}>Seats</Text>
-          <Text style={styles.seatCountLabel}>30</Text>
+          <Text style={styles.seatCountLabel}>{busSeats}</Text>
         </View>
 
         <View style={styles.availBookStatusContainer}>
           <View>
             <Text style={styles.seatBookLabel}>Booked</Text>
-            <Text style={styles.seatBookCount}>22</Text>
+            <Text style={styles.seatBookCount}>0</Text>
           </View>
           <View>
             <Text style={styles.seatAvailLabel}>Available</Text>
-            <Text style={styles.seatAvailCount}>8</Text>
+            <Text style={styles.seatAvailCount}>{busSeats}</Text>
           </View>
         </View>
 
@@ -46,7 +53,7 @@ const SeatInfo = () => {
           </View> :
 
           <View style={styles.seatBookedStatus}>
-            <Text style={styles.seatBookedText}>Expired</Text>
+            <Text style={styles.seatBookedText}>Reserve your seat</Text>
             <Ionicons name='warning' size={26} color='#ffffff' />
           </View>
         }

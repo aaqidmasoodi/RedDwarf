@@ -9,7 +9,7 @@ import * as Animatable from 'react-native-animatable';
 
 
 const AnimatedIonicons = Animatable.createAnimatableComponent(Ionicons);
-const AnimatedMaterialCommunityIcons = Animatable.createAnimatableComponent(MaterialCommunityIcons);
+
 
 const ScanQR = () => {
     const [hasPermission, setHasPermission] = useState(null);
@@ -147,7 +147,7 @@ const ScanQR = () => {
 
                         <AnimatedIonicons
                             animation={!scanned ? 'pulse' : null}
-                            duration={1500}
+                            duration={1000}
                             iterationCount='infinite'
                             useNativeDriver
                             style={styles.qrScanArea}
@@ -181,11 +181,7 @@ const ScanQR = () => {
                             {'Securely scan & validate all payments'}
                         </Text>
                     </View>
-                    <AnimatedMaterialCommunityIcons
-                        animation={!scanned ? 'pulse' : null}
-                        duration={1500}
-                        iterationCount='infinite'
-                        useNativeDriver
+                    <MaterialCommunityIcons
                         name="qrcode-scan"
                         size={128}
                         color="#cf8300" />
@@ -288,7 +284,8 @@ const styles = StyleSheet.create({
     qrGuidetextContainer: {
         backgroundColor: '#00000080',
         borderRadius: 10,
-        padding: 10,
+        padding: 15,
+
         justifyContent: 'center',
         alignItems: 'center'
     },

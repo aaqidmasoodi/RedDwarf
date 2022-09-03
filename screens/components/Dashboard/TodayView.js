@@ -6,8 +6,10 @@ import { useSelector } from 'react-redux'
 const TodayView = () => {
 
 
-    const user = useSelector(state => state.root.user)
-    const firstName = user ? user.name.split(" ")[0] : null
+    const user = useSelector(state => state.root.user);
+    const firstName = user ? user.name.split(" ")[0] : null;
+    const userProfilePhoto = user ? user.profile.profile_picture : null;
+
 
     return (
         <View style={styles.todayContainer}>
@@ -16,7 +18,9 @@ const TodayView = () => {
             </View>
             <Image
                 style={styles.dashboardPhoto}
-                source={require('../../../assets/app/profile_photo.jpeg')}
+                source={{
+                    uri: userProfilePhoto,
+                }}
             />
         </View>
     )

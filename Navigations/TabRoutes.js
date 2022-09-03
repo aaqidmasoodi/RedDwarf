@@ -7,13 +7,20 @@ import Dashboard from '../screens/Dashboard';
 import Bus from '../screens/Bus';
 import QRCode from '../screens/QRCode';
 import Profile from '../screens/Profile';
+import { useSelector } from 'react-redux';
 
 
 const Tab = createBottomTabNavigator();
 
 
 
+
 const TabRoutes = () => {
+
+    const user = useSelector(state => state.root.user);
+
+    const bus = user ? user.bus : null;
+
     return (
         <Tab.Navigator
 
@@ -49,8 +56,10 @@ const TabRoutes = () => {
 
 
             <Tab.Screen name="Dashboard" component={Dashboard} />
-            <Tab.Screen name="Bus" component={Bus} />
-            <Tab.Screen name="QRCode" component={QRCode} />
+            {bus && <>
+                <Tab.Screen name="Bus" component={Bus} />
+                <Tab.Screen name="QRCode" component={QRCode} />
+            </>}
             <Tab.Screen name="Profile" component={Profile} />
 
 

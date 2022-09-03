@@ -13,7 +13,7 @@ const CustomDrawer = (props) => {
 
     const userFullName = user ? user.name : null;
     const userPhone = user ? user.phone : null;
-
+    const userProfilePhoto = user ? user.profile.profile_picture : null;
 
 
     const dispatch = useDispatch();
@@ -25,7 +25,9 @@ const CustomDrawer = (props) => {
 
                 <ImageBackground source={require("../../assets/app/drawerBackground.png")} style={styles.drawerBackground}>
 
-                    <Image source={require("../../assets/app/profile_photo.jpeg")} style={styles.drawerProfilePicture} />
+                    <Image source={{
+                        uri: userProfilePhoto,
+                    }} style={styles.drawerProfilePicture} />
 
                     <Text style={styles.drawerUsername}>{userFullName}</Text>
                     <Text style={styles.drawerPhoneNumber}>+91 {userPhone}</Text>
