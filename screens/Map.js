@@ -6,7 +6,6 @@ import { Ionicons } from '@expo/vector-icons';
 import * as Location from 'expo-location';
 
 
-
 const Map = () => {
 
   const navigation = useNavigation();
