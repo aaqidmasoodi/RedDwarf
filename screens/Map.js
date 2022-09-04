@@ -8,6 +8,13 @@ import * as Location from 'expo-location';
 
 const Map = () => {
 
+  const init_location = {
+    latitude: 34.2306810561,
+    longitude: 74.727305319,
+    latitudeDelta: 0.008,
+    longitudeDelta: 0.008,
+  }
+
   const navigation = useNavigation();
   const [location, setLocation] = useState({
     latitude: 34.2306810561,
@@ -55,6 +62,7 @@ const Map = () => {
 
 
   useEffect(() => {
+    let isSubscribed = true;
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();    //need bgPerm too
       if (status !== 'granted') {
@@ -69,13 +77,17 @@ const Map = () => {
         timeInterval: 1000 },
         (loc) => {
           console.log(loc)
-          setLocation({
-            latitude: loc.coords.latitude,
-            longitude: loc.coords.longitude,
-          })
+          if (isSubscribed){
+            setLocation({
+              latitude: loc.coords.latitude,
+              longitude: loc.coords.longitude,
+            })
+          }
         });
       // setLocation(location);
-    })();
+    })
+    ();
+    return () => (isSubscribed = false)
   }, []);
   
   var _mapView = MapView;
@@ -86,7 +98,7 @@ const Map = () => {
         ref = {(mapView) => { _mapView = mapView; }}
         style={styles.map}
         // provider={PROVIDER_GOOGLE}
-        initialRegion={location}
+        initialRegion={init_location}
       >
         <Marker coordinate={location} style={styles.marker}
         image = {require('../assets/person.png')}
