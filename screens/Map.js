@@ -1,5 +1,5 @@
 import { StyleSheet, Text, TouchableOpacity, View,} from 'react-native'
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useRef} from 'react'
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
@@ -7,6 +7,8 @@ import * as Location from 'expo-location';
 
 
 const Map = () => {
+
+  const funRef = useRef(null);
 
   const init_location = {
     latitude: 34.2306810561,
@@ -29,6 +31,19 @@ const Map = () => {
     longitude: 74.727305319,
   });
 
+
+  const getDistance = async () => {
+    let url = "http://maps.googleapis.com/maps/api/directions/json?origin=" + location.latitude + "," + location.longitude + "&destination=" + location2.latitude + "," + location2.longitude + "&mode=driving&sensor=false&key=AIzaSyD_6Do63-2q2j1ijYqbeIUMaVQ2560fKvo";
+    const response2 = await fetch(url, {
+        method: 'GET',
+    });
+    
+    const status = await response2.json();
+    // console.log(url)
+    console.log(response2);
+  }
+  getDistance();
+
   const getLocation = async () => {
     let postData =  location2;
     const response = await fetch('https://qr-api-test.herokuapp.com/busSimulation', {
@@ -40,7 +55,7 @@ const Map = () => {
     });
     
     const new_location = await response.json();
-    console.log(new_location);
+    // console.log(new_location);
     setLocation2(new_location);
   }
   
@@ -53,11 +68,11 @@ const Map = () => {
   }
 
   useEffect(() => {
-    const interval = setInterval(() => {
+    funRef.current = setInterval(() => {
       getLocation();
 
     }, 2000);
-    return () => clearInterval(interval);
+    return () => clearInterval(funRef.current);
   }, []);
 
 
@@ -76,7 +91,7 @@ const Map = () => {
         distanceInterval: 2,
         timeInterval: 1000 },
         (loc) => {
-          console.log(loc)
+          // console.log(loc)
           if (isSubscribed){
             setLocation({
               latitude: loc.coords.latitude,

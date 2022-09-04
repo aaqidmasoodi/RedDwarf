@@ -1,13 +1,49 @@
-import { StyleSheet, Text, View, Image, ScrollView, FlatList, TextInput, Alert } from 'react-native'
+import { StyleSheet, Text, View, Image, ScrollView, FlatList, TextInput, Alert, Button } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import React from 'react'
 import { MaterialIcons, Ionicons } from '@expo/vector-icons';
 
 import TodayView from './components/Dashboard/TodayView';
 import BusInfo from './components/Dashboard/BusInfo';
-import { useState } from 'react';
+import { useState , useRef, useEffect } from 'react';
+import * as Notifications from 'expo-notifications';
 
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: true,
+  }),
+});
 
+async function schedulePushNotification() {
+  await Notifications.scheduleNotificationAsync({
+    content: {
+      title: "CUKBRS",
+      body: 'Start sharing the location',
+    },
+    trigger: { 
+      // hour: 2, minute: 52, repeats: true        // time to repeat everyday
+      seconds: 1
+     },
+  });
+}
+
+async function registerForPushNotificationsAsync() {
+  let token;
+    const { status: existingStatus } = await Notifications.getPermissionsAsync();
+    let finalStatus = existingStatus;
+    if (existingStatus !== 'granted') {
+      const { status } = await Notifications.requestPermissionsAsync();
+      finalStatus = status;
+    }
+    if (finalStatus !== 'granted') {
+      alert('Failed to get push token for push notification!');
+      return;
+    }
+    token = (await Notifications.getExpoPushTokenAsync()).data;
+    console.log(token);
+}
 
 let data = [
   {
@@ -41,6 +77,30 @@ let data = [
 
 
 const Dashboard = () => {
+
+  const [expoPushToken, setExpoPushToken] = useState('');
+  const [notification, setNotification] = useState(false);
+  const notificationListener = useRef();
+  const responseListener = useRef();
+
+  useEffect(() => {
+    registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
+
+    notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+      setNotification(notification);
+    });
+
+    responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+      console.log(response);
+    });
+
+    schedulePushNotification().then(console.log('schedule'));
+
+    return () => {
+      Notifications.removeNotificationSubscription(notificationListener.current);
+      Notifications.removeNotificationSubscription(responseListener.current);
+    };
+  }, []);
 
   const [coordinator, setCoordintor] = useState(true)
 

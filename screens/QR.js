@@ -28,9 +28,10 @@ const QR = () => {
 
     useEffect(() => {
         getQR();
-        setInterval(() => {
+        const interval = setInterval(() => {
             getQR();
           }, 30000);
+        return () => clearInterval(interval);
       }, []);
 
     return (
