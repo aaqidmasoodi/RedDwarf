@@ -23,7 +23,7 @@ async function schedulePushNotification() {
       body: 'Start sharing the location',
     },
     trigger: { 
-      // hour: 2, minute: 52, repeats: true        // time to repeat everyday
+      // hour: 7, minute: 30, repeats: true        // time to repeat everyday
       seconds: 1
      },
   });
@@ -42,7 +42,7 @@ async function registerForPushNotificationsAsync() {
       return;
     }
     token = (await Notifications.getExpoPushTokenAsync()).data;
-    console.log(token);
+    // console.log(token);
 }
 
 let data = [
@@ -94,7 +94,7 @@ const Dashboard = () => {
       console.log(response);
     });
 
-    schedulePushNotification().then(console.log('schedule'));
+    schedulePushNotification().then(console.log('notif scheduled'));
 
     return () => {
       Notifications.removeNotificationSubscription(notificationListener.current);

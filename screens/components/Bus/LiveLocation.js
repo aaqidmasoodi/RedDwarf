@@ -7,13 +7,16 @@ const LiveLocation = () => {
 
   const navigation = useNavigation();
   const [status, setStatus] = useState(false);
+  const [loading, setLoading] = useState(false)
 
   const sharingLocation = async () => {
+    setLoading(true);
     const response = await fetch('https://qr-api-test.herokuapp.com/locationSharing?bus=5', {
         method: 'GET',
     });
     
     const status = await response.json();
+    setLoading(false);
     setStatus(status.sharing);
   }
   
@@ -47,14 +50,19 @@ const LiveLocation = () => {
         </MapView>
       </View>
 
-      <View style={[styles.mapOverlay, status && {backgroundColor: 'blue'}]}>
+      <View style={[styles.mapOverlay, status && !loading && {backgroundColor: 'blue'}]}>
         <View>
           {
-            status ?
-            <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'white', textAlign:'center' }}>Real-time location available</Text>
-            :
-            <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'white', textAlign: 'center' }}>Real-time location unavailable</Text>
+            loading && <ActivityIndicator size= 'large' color='yellow' />
           }
+            {
+              status && !loading &&
+              <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'white', textAlign:'center' }}>Real-time location available</Text>
+            }
+            {
+              !status && !loading &&
+              <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'white', textAlign: 'center' }}>Real-time location unavailable</Text>
+            }
         </View>
       </View>
 

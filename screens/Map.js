@@ -4,12 +4,15 @@ import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import * as Location from 'expo-location';
+import { setEnabled } from 'react-native/Libraries/Performance/Systrace';
 
 
 const Map = () => {
 
-  const funRef = useRef(null);
+  const [enabled, setEnabled] = useState(true);
 
+  const funRef = useRef(null);
+  const [time, setTime] = useState(0);
   const init_location = {
     latitude: 34.2306810561,
     longitude: 74.727305319,
@@ -18,11 +21,11 @@ const Map = () => {
   }
 
   const navigation = useNavigation();
-  const [location, setLocation] = useState({
+  const [myLocation, setLocation] = useState({
     latitude: 34.2306810561,
     longitude: 74.727305319,
   });
-  const [location2, setLocation2] = useState({
+  const [busLocation, setBusLocation] = useState({
     latitude: 34.0403,
     longitude: 74.8880,
   });
@@ -33,19 +36,19 @@ const Map = () => {
 
 
   const getDistance = async () => {
-    let url = "http://maps.googleapis.com/maps/api/directions/json?origin=" + location.latitude + "," + location.longitude + "&destination=" + location2.latitude + "," + location2.longitude + "&mode=driving&sensor=false&key=AIzaSyD_6Do63-2q2j1ijYqbeIUMaVQ2560fKvo";
+    let url = "http://maps.googleapis.com/maps/api/directions/json?origin=" + location.latitude + "," + location.longitude + "&destination=" + location2.latitude + "," + location2.longitude + "&mode=driving&sensor=false&key=AIzaSyCqRV8TnSQYjNtxRA0o-zoDGm9UdWur1bo";
     const response2 = await fetch(url, {
         method: 'GET',
     });
     
     const status = await response2.json();
-    // console.log(url)
+    console.log(url)
     console.log(response2);
   }
-  getDistance();
+  // getDistance();
 
   const getLocation = async () => {
-    let postData =  location2;
+    let postData =  busLocation;
     const response = await fetch('https://qr-api-test.herokuapp.com/busSimulation', {
         method: 'POST',
         headers: {
@@ -56,7 +59,7 @@ const Map = () => {
     
     const new_location = await response.json();
     // console.log(new_location);
-    setLocation2(new_location);
+    setBusLocation(new_location);
   }
   
   const getLocation2 = async () => {
@@ -67,16 +70,10 @@ const Map = () => {
     setLocation3(new_location);
   }
 
+
   useEffect(() => {
     funRef.current = setInterval(() => {
       getLocation();
-
-    }, 2000);
-    return () => clearInterval(funRef.current);
-  }, []);
-
-
-  useEffect(() => {
     let isSubscribed = true;
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();    //need bgPerm too
@@ -88,8 +85,7 @@ const Map = () => {
       let locations = await Location.watchPositionAsync({
         enableHighAccuracy: true ,
         accuracy: Location.Accuracy.Highest,
-        distanceInterval: 2,
-        timeInterval: 1000 },
+      },
         (loc) => {
           // console.log(loc)
           if (isSubscribed){
@@ -97,12 +93,27 @@ const Map = () => {
               latitude: loc.coords.latitude,
               longitude: loc.coords.longitude,
             })
+            if(loc.coords.speed > 0.001){     //for console logging. least speed
+              setEnabled(true);
+              let delta1 = loc.coords.latitude - busLocation.latitude;
+              let delta2 = loc.coords.longitude - busLocation.longitude;
+              let dist = Math.sqrt((delta1)*(delta1) + (delta2)*(delta2));
+              let dist_new = dist * 111 * 1.2; // 111 is 1 kms in degree and 1.2 is my personal contribution lol
+              let speed_new = loc.coords.speed * 3.6;
+              let time_new = String(dist_new/speed_new * 60).slice(0,3);
+              if(time_new > 200) setEnabled(false); //200 peak time
+              setTime(time_new);
+              console.log(loc.coords.speed + ' kmph ' + time_new + ' minutes' );
+            }else{
+              setEnabled(false);
+            }
           }
         });
       // setLocation(location);
     })
     ();
-    return () => (isSubscribed = false)
+    }, 1000);
+    return () => clearInterval(funRef.current);
   }, []);
   
   var _mapView = MapView;
@@ -115,11 +126,11 @@ const Map = () => {
         // provider={PROVIDER_GOOGLE}
         initialRegion={init_location}
       >
-        <Marker coordinate={location} style={styles.marker}
+        <Marker coordinate={myLocation} style={styles.marker}
         image = {require('../assets/person.png')}
         title={"You"}
         />
-        <Marker coordinate={location2} style={styles.marker}
+        <Marker coordinate={busLocation} style={styles.marker}
         image = {require('../assets/bus.png')}
         title={"Bus 5"}
         description={"Docking sucessfull!"}
@@ -140,29 +151,39 @@ const Map = () => {
       >
         <Ionicons name='arrow-back' size={24} color='blue' />
       </TouchableOpacity>
+      {
+        enabled ?
+        <View style={[styles.estimate, {backgroundColor: 'lightgreen'}]}>
+          <Text>Estd time: {time} mins</Text>
+        </View>
+        :
+        <View style={[styles.estimate, {backgroundColor: 'lightyellow'}]}>
+          <Text>Moving slow/Stopped</Text>
+        </View>
+      }
 
       <View style={styles.mapButtons}>
 
       <TouchableOpacity 
-            style={styles.btn_map}
+            style={styles.btn_map1}
            onPress = {() => _mapView.animateToRegion({
-            latitude: 34.0403,
-            longitude: 74.8880,
+            latitude: busLocation.latitude,
+            longitude: busLocation.longitude,
             latitudeDelta: 0.008,
             longitudeDelta: 0.008,
           }, 3000)}>
-          <Text style={{color: 'black'}}>Bus location</Text>
+          <Ionicons name="bus-sharp" size={24} />
       </TouchableOpacity>
 
       <TouchableOpacity 
-            style={styles.btn_map}
+            style={styles.btn_map2}
            onPress = {() => _mapView.animateToRegion({
-            latitude: location.latitude,
-            longitude: location.longitude,
+            latitude: myLocation.latitude,
+            longitude: myLocation.longitude,
             latitudeDelta: 0.001,
             longitudeDelta: 0.001,
           }, 3000)}>
-          <Text style={{color: 'black'}}>My location</Text>
+          <Ionicons name="person-sharp" size={24} />
       </TouchableOpacity>
     </View>
     </View>
@@ -205,19 +226,39 @@ const styles = StyleSheet.create({
     elevation: 10,
   },
 
-  mapButtons:{
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    textAlign: 'center',
-    margin: 5,
-  },
+  
 
-  btn_map:{
+  btn_map1:{
+    bottom: 20,
+    left: 50,
+    position: 'absolute',
     margin: 5,
     backgroundColor: 'white',
     padding: 20,
     borderRadius: 10,
     
+  },
+  btn_map2:{
+    position: 'absolute',
+    bottom: 20,
+    right: 50,
+    margin: 5,
+    backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 10,
+    
+  },
+
+  estimate: {
+    backgroundColor: 'white',
+    padding: 15,
+    borderRadius: 10,
+    position: 'absolute',
+    marginTop: 75,
+    right: 0,
+    width: 200,
+    justifyContent: 'center',
+    opacity: 0.8
   }
 
 
