@@ -1,7 +1,9 @@
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { MaterialIcons } from '@expo/vector-icons';
+import { MaterialIcons, Ionicons } from '@expo/vector-icons';
+
+
 import { useNavigation } from '@react-navigation/native';
 const Settings = () => {
 
@@ -19,10 +21,14 @@ const Settings = () => {
                     <TouchableOpacity
                         onPress={() => navigation.navigate('SelectBus')}
                         style={styles.settingsOptionBtn}>
-                        <Text style={styles.settingsOptionText}>
-                            Change Bus
-                        </Text>
-                        <MaterialIcons name="navigate-next" size={28} color="#6f6f6f" />
+                        <View style={styles.settingOption}>
+                            <Ionicons name='bus-sharp' size={22} color='#cf8300' />
+                            <Text style={styles.settingsOptionText}>
+                                Change Bus
+                            </Text>
+                        </View>
+
+                        <></>
                     </TouchableOpacity>
 
                 </View>
@@ -38,7 +44,7 @@ const styles = StyleSheet.create({
 
     container: {
         flex: 1,
-        backgroundColor: '#ffffff',
+        backgroundColor: '#fdfdfd',
 
     },
 
@@ -67,10 +73,19 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         padding: 15,
+        borderRadius: 10,
         backgroundColor: '#ffffff',
+        elevation: 1
+    },
+
+    settingOption: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center'
     },
 
     settingsOptionText: {
+        marginLeft: 10,
         fontSize: 18,
         fontWeight: 'bold',
         color: '#6f6f6f'

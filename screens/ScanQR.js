@@ -67,7 +67,7 @@ const ScanQR = () => {
                     .then(res => {
                         setIsActive(false);
                         setScanned(false);
-                        console.log('here.')
+                        console.log(res.data)
                         setPayload(res.data.data);
 
                     })
@@ -203,7 +203,9 @@ const ScanQR = () => {
                     <ScrollView>
                         <Image
                             style={styles.profilePhoto}
-                            source={require('../assets/app/profile_photo.jpeg')}
+                            source={{
+                                uri: payload.profile.profile_picture
+                            }}
                         />
                         <Text>{payload.name}</Text>
                         <Text>{payload.phone}</Text>
@@ -319,7 +321,8 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: 22,
         width: 250,
-        textAlign: 'center'
+        textAlign: 'center',
+        color: '#4f4f4f'
     },
     scannerTextBody: {
         width: 250

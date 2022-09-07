@@ -8,6 +8,7 @@ import ScanQR from '../screens/ScanQR';
 import CustomDrawer from '../screens/components/CustomDrawer';
 
 import { Ionicons } from '@expo/vector-icons';
+import { useSelector } from 'react-redux';
 
 const windowWidth = Dimensions.get('window').width;
 const Drawer = createDrawerNavigator();
@@ -15,6 +16,9 @@ const Drawer = createDrawerNavigator();
 
 
 const DrawerStack = () => {
+
+
+    const user = useSelector(state => state.root.user);
 
     return (
         <Drawer.Navigator
@@ -51,6 +55,16 @@ const DrawerStack = () => {
                 }}
             />
 
+            {
+                (user?.is_driver || user?.is_coordinator) &&
+                <Drawer.Screen
+                    name="ScanQR"
+                    component={ScanQR}
+                    options={{
+                        headerShown: false,
+                    }}
+                />
+            }
 
             <Drawer.Screen
                 name="Settings"
@@ -61,13 +75,6 @@ const DrawerStack = () => {
             />
 
 
-            <Drawer.Screen
-                name="ScanQR"
-                component={ScanQR}
-                options={{
-                    headerShown: false,
-                }}
-            />
         </Drawer.Navigator>
     )
 }

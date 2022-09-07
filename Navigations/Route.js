@@ -7,7 +7,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import * as SecureStore from 'expo-secure-store';
 const Stack = createStackNavigator();
 
-import { setToken, setUser, setIsLoading } from '../redux/slices/rootSlice';
+import { setToken, setUser, setIsLoading, logout } from '../redux/slices/rootSlice';
 import { ActivityIndicator, Alert, View } from 'react-native';
 import api from '../api/config';
 
@@ -28,16 +28,17 @@ const Route = () => {
                     .then(res => {
                         dispatch(setToken(token));
                         dispatch(setUser(res.data));
+                        // console.log(res.data)
                     })
                     .catch(e => {
-                        console.log(e.response)
+                        console.log(e.response);
+                        dispatch(logout());
                     })
 
 
             } else {
                 dispatch(setToken(token));
                 dispatch(setIsLoading(false));
-
             }
 
 

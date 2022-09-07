@@ -12,9 +12,6 @@ import { useSelector } from 'react-redux';
 
 const Tab = createBottomTabNavigator();
 
-
-
-
 const TabRoutes = () => {
 
     const user = useSelector(state => state.root.user);
@@ -58,7 +55,7 @@ const TabRoutes = () => {
             <Tab.Screen name="Dashboard" component={Dashboard} />
             {bus && <>
                 <Tab.Screen name="Bus" component={Bus} />
-                <Tab.Screen name="QRCode" component={QRCode} />
+                {(!user?.is_driver) && <Tab.Screen name="QRCode" component={QRCode} />}
             </>}
             <Tab.Screen name="Profile" component={Profile} />
 

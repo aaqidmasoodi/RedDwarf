@@ -21,7 +21,7 @@ const BusBasicInfo = () => {
         <Text style={styles.busNoText}>Bus</Text>
         <Text style={styles.busNoDigitText}>{busNumber}</Text>
       </View>
-      <View>
+      <View style={{ marginTop: 5 }}>
         <Text style={[styles.busBasicInfoRoute, styles.busStartText]}>{busStart}</Text>
         <Text style={[styles.busBasicInfoRoute, styles.busEndText]}>{busDestination}</Text>
       </View>
@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
   busBasicInfoContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center'
+    alignItems: 'flex-start'
   },
 
   busNoText: {

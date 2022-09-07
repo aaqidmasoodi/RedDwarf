@@ -87,12 +87,13 @@ export default SeatInfo
 const styles = StyleSheet.create({
 
   shadow: {
-    shadowOffset: { width: 0, height: 5 },
+    shadowOffset: { width: 0, height: 0 },
     shadowColor: 'black',
-    shadowOpacity: 0.3,
-    shadowRadius: 5,
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
     zIndex: 999,
   },
+
 
   seatInfoContainer: {
     marginTop: 10,

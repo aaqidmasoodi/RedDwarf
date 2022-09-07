@@ -1,15 +1,16 @@
 import 'react-native-gesture-handler'; // please do not move this to the bottom. KEEP THIS ON VERY TOP
 import store from './redux/store';
-import { Provider, useSelector } from 'react-redux';
-
+import { Provider, useSelector, useDispatch } from 'react-redux';
 import { LogBox, StatusBar } from 'react-native';
 import Route from './Navigations/Route';
 
+import * as LIVE_LOCATION_SOCKET from './api/Sockets/liveLocationSocket'
 
 LogBox.ignoreAllLogs(true);
 
 
 export default function App() {
+
 
   return (
     <Provider store={store}>

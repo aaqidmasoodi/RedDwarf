@@ -8,7 +8,7 @@ import Alerts from './components/Dashboard/Alerts';
 import SelectBusComponent from './components/SelectBusComponent';
 import { useSelector } from 'react-redux';
 
-
+import { Entypo } from '@expo/vector-icons';
 
 const Dashboard = () => {
 
@@ -20,9 +20,13 @@ const Dashboard = () => {
 
     <SafeAreaView style={styles.container}>
 
+      {(user?.is_driver || user?.is_coordinator) &&
+        <TouchableOpacity style={styles.createAlertBtn}>
+          <Entypo name="plus" size={36} color="#ffffff" />
+        </TouchableOpacity>
+      }
 
-
-      {bus && <ScrollView>
+      {bus && <ScrollView nestedScrollEnabled>
         <View style={styles.contentContainer}>
           <TodayView />
           <BusInfo />
@@ -55,6 +59,21 @@ const styles = StyleSheet.create({
     height: '100%',
     padding: 20,
   },
+
+  createAlertBtn: {
+    bottom: 20,
+    right: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    textAlign: 'center',
+    position: 'absolute',
+    backgroundColor: '#cf8300',
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    elevation: 3,
+    zIndex: 9999
+  }
 
 
 

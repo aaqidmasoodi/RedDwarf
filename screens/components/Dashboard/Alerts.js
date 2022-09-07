@@ -1,4 +1,5 @@
-import { StyleSheet, Text, View, FlatList } from 'react-native'
+import { StyleSheet, Text, View } from 'react-native'
+import { FlatList } from 'react-native-gesture-handler'
 import React from 'react'
 
 
