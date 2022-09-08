@@ -1,6 +1,6 @@
-import { StyleSheet, Text, TouchableOpacity, View, ScrollView } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, View, ScrollView, RefreshControl } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context';
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 
 import BusBasicInfo from './components/Bus/BusBasicInfo';
@@ -19,11 +19,32 @@ const Bus = () => {
     const bus = user ? user.bus : null;
     const navigation = useNavigation();
 
+    const [refreshing, setRefreshing] = useState(false);
+
+    const handleRefresh = () => {
+        console.log("Refreshed...")
+    }
+
+    useEffect(() => {
+        const log = navigation.addListener('focus', () => {
+            handleRefresh();
+        });
+
+        return log;
+    }, [navigation]);
+
     return (
 
         <SafeAreaView style={styles.container}>
 
-            {bus && <ScrollView>
+            {bus && <ScrollView
+                refreshControl={
+                    <RefreshControl
+                        refreshing={refreshing}
+                        onRefresh={handleRefresh}
+                    />
+                }
+            >
                 <View style={styles.contentContainer}>
 
                     <BusBasicInfo />

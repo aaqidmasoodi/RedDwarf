@@ -3,51 +3,77 @@ import React, { useState } from 'react'
 import { useStripe } from '@stripe/stripe-react-native'
 import * as Animatable from 'react-native-animatable';
 import { BASE_URL } from '../../../api/config'
+import { useSelector } from 'react-redux';
 const AnimatedTouchable = Animatable.createAnimatableComponent(TouchableOpacity);
+
+
 const Payment = (props) => {
 
   const stripe = useStripe();
-
-  console.log(BASE_URL);
-
   const [isLoading, setIsLoading] = useState(false);
+  const token = useSelector(state => state.root.token)
+  const user = useSelector(state => state.root.user);
 
   const attemptPayment = async () => {
     setIsLoading(true);
     try {
-      // sending request
+
       const response = await fetch(`${BASE_URL}/payments/create-payment-intent/`, {
         method: "POST",
-        body: JSON.stringify({ item: 'item' }),
+        body: JSON.stringify(
+          {
+            busFare: user?.bus?.fee,
+            metadata: {
+              userID: user?.id,
+              userName: user?.name,
+              phoneNumber: user?.phone,
+              busNumber: user?.bus?.number
+            }
+          }),
+
         headers: {
           "Content-Type": "application/json",
+          "Authorization": `Token ${token}`
         },
       });
+
+
       const data = await response.json();
       if (!response.ok) {
         setIsLoading(false);
 
         return Alert.alert(data.message);
       }
+
+
       const clientSecret = data.clientSecret;
       const initSheet = await stripe.initPaymentSheet({
         paymentIntentClientSecret: clientSecret,
         merchantDisplayName: 'com.merchant.reddwarf',
       });
+
+
+
       if (initSheet.error) {
         setIsLoading(false);
 
         return Alert.alert(initSheet.error.message);
       }
+
+
       const presentSheet = await stripe.presentPaymentSheet({
         clientSecret,
       });
+
+
       if (presentSheet.error) {
 
         setIsLoading(false);
 
         return Alert.alert(presentSheet.error.message);
       }
+
+
       setIsLoading(false);
       props.updateStatus(true);
       Alert.alert("Payment Successful. Thank you!");
@@ -58,9 +84,6 @@ const Payment = (props) => {
       Alert.alert("Something went wrong, try again later!");
     }
   };
-
-  // shutdown 0.5ml
-  // 4
 
   return (
     <AnimatedTouchable

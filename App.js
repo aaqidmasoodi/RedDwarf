@@ -15,9 +15,8 @@ export default function App() {
 
   return (
     <Provider store={store}>
-      <StatusBar barStyle="dark-content" hidden={false} backgroundColor="#ffffff00" translucent={true} />
       <Sockets>
-
+        <StatusBar barStyle="dark-content" hidden={false} backgroundColor="#ffffff00" translucent={true} />
         <Route />
       </Sockets>
     </Provider>

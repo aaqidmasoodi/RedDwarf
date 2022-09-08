@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image, ScrollView } from 'react-native'
+import { StyleSheet, Text, View, Image, ScrollView, RefreshControl } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import React from 'react'
 import { useSelector } from 'react-redux';
@@ -6,6 +6,7 @@ import { useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Feather } from '@expo/vector-icons';
+import { useState } from 'react';
 
 const Profile = () => {
 
@@ -18,12 +19,18 @@ const Profile = () => {
   const userProfilePhoto = user ? user.profile.profile_picture : null;
 
 
+  const [refreshing, setRefreshing] = useState(false);
+
+  const handleRefresh = () => {
+    console.log("Refreshed...")
+  }
+
+
   useEffect(() => {
     const log = navigation.addListener('focus', () => {
-      console.log("Hello World")
+      handleRefresh();
     });
 
-    // Return the function to unsubscribe from the event so it gets removed on unmount
     return log;
   }, [navigation]);
 
@@ -33,7 +40,15 @@ const Profile = () => {
 
     <SafeAreaView style={styles.container}>
 
-      <ScrollView>
+      <ScrollView
+
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={handleRefresh}
+          />
+        }
+      >
         <View style={styles.contentContainer}>
 
 

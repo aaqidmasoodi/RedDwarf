@@ -4,10 +4,7 @@ import QR from '../screens/QR';
 import SelectBus from '../screens/SelectBus';
 import DrawerStack from './DrawerStack';
 import BusChanged from '../screens/BusChanged';
-import TestPage from '../screens/TestPage';
 import SetPickUpPoint from '../screens/SetPickUpPoint';
-
-
 
 const MainStack = (Stack) => {
 
@@ -48,14 +45,6 @@ const MainStack = (Stack) => {
             <Stack.Screen
                 name='BusChanged'
                 component={BusChanged}
-                options={{
-                    headerShown: false
-                }}
-            />
-
-            <Stack.Screen
-                name='TestPage'
-                component={TestPage}
                 options={{
                     headerShown: false
                 }}

@@ -32,7 +32,7 @@ const LiveLocation = () => {
       disabled={false}
       style={[styles.locationContainer,
       Platform.OS === 'ios' ? styles.shadow : null]}
-      activeOpacity={0.9}
+      activeOpacity={0.8}
       onPress={() => navigation.navigate('Map')}
     >
       <View style={styles.smallMapContainer}>
@@ -95,17 +95,18 @@ const styles = StyleSheet.create({
   locationContainer: {
     elevation: 10,
     marginTop: 20,
-    backgroundColor: 'white',
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
     width: '100%',
     height: 200,
-    overflow: 'hidden',
     elevation: 5,
+    zIndex: 9999,
   },
 
 
   smallMapContainer: {
+    // borderTopLeftRadius: 20,
+    // borderTopRightRadius: 20,
     overflow: 'hidden',
     flex: 3,
 

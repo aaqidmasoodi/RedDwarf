@@ -1,7 +1,6 @@
-import { StyleSheet, Text, View, Image, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native'
+import { StyleSheet, Text, View, Image, ScrollView, TouchableOpacity, ActivityIndicator, RefreshControl } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context';
-import React from 'react'
-
+import React, { useEffect } from 'react'
 import TodayView from './components/Dashboard/TodayView';
 import BusInfo from './components/Dashboard/BusInfo';
 import Alerts from './components/Dashboard/Alerts';
@@ -9,11 +8,30 @@ import SelectBusComponent from './components/SelectBusComponent';
 import { useSelector } from 'react-redux';
 
 import { Entypo } from '@expo/vector-icons';
+import { useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
 
 const Dashboard = () => {
 
   const user = useSelector(state => state.root.user);
+  const navigation = useNavigation();
+
   const bus = user ? user.bus : null;
+
+  const [refreshing, setRefreshing] = useState(false);
+
+  const handleRefresh = () => {
+    console.log("Refreshed...")
+  }
+
+
+  useEffect(() => {
+    const log = navigation.addListener('focus', () => {
+      handleRefresh();
+    });
+
+    return log;
+  }, [navigation]);
 
 
   return (
@@ -26,7 +44,14 @@ const Dashboard = () => {
         </TouchableOpacity>
       }
 
-      {bus && <ScrollView nestedScrollEnabled>
+      {bus && <ScrollView
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={handleRefresh}
+          />
+        }
+        nestedScrollEnabled>
         <View style={styles.contentContainer}>
           <TodayView />
           <BusInfo />

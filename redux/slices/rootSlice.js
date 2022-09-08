@@ -5,7 +5,8 @@ import * as SecureStore from 'expo-secure-store';
 const initialState = {
   user: null,
   token: null,
-  isLoading: true
+  isLoading: true,
+  isLoggedIn: false
 }
 
 export const rootSlice = createSlice({
@@ -42,6 +43,10 @@ export const rootSlice = createSlice({
 
     setIsLoading: (state, action) => {
       state.isLoading = action.payload
+    },
+
+    setRefreshing: (state, action) => {
+      state.refreshing = action.payload
     }
   },
 })
