@@ -3,8 +3,9 @@ import store from './redux/store';
 import { Provider, useSelector, useDispatch } from 'react-redux';
 import { LogBox, StatusBar } from 'react-native';
 import Route from './Navigations/Route';
+import Sockets from './api/Sockets/Sockets';
 
-import * as LIVE_LOCATION_SOCKET from './api/Sockets/liveLocationSocket'
+// import * as LIVE_LOCATION_SOCKET from './api/Sockets/liveLocationSocket'
 
 LogBox.ignoreAllLogs(true);
 
@@ -15,7 +16,10 @@ export default function App() {
   return (
     <Provider store={store}>
       <StatusBar barStyle="dark-content" hidden={false} backgroundColor="#ffffff00" translucent={true} />
-      <Route />
+      <Sockets>
+
+        <Route />
+      </Sockets>
     </Provider>
 
   );

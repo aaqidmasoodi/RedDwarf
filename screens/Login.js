@@ -8,6 +8,7 @@ import { FontAwesome } from '@expo/vector-icons';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../redux/slices/rootSlice';
+import { connectSocket } from '../redux/slices/busLocationSlice'
 import { BASE_URL } from '../api/config'
 import axios from 'axios'
 
@@ -57,6 +58,7 @@ const Login = () => {
         })
             .then(res => {
                 dispatch(login(res.data));
+                dispatch(connectSocket());
                 setIsLoading(false);
             })
 

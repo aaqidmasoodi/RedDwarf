@@ -5,6 +5,7 @@ import { Ionicons } from '@expo/vector-icons'
 
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../../redux/slices/rootSlice';
+import { closeSocket } from '../../redux/slices/busLocationSlice';
 
 
 const CustomDrawer = (props) => {
@@ -17,6 +18,16 @@ const CustomDrawer = (props) => {
 
 
     const dispatch = useDispatch();
+
+
+    const handleLogout = () => {
+
+        dispatch(logout());
+        dispatch(closeSocket());
+
+
+    }
+
     return (
 
         <View style={styles.drawerWrapper}>
@@ -47,7 +58,7 @@ const CustomDrawer = (props) => {
                         <Text style={{ marginLeft: 6, fontWeight: '700', fontSize: 15, color: '#4f4f4f' }}>Tell a friend</Text>
                     </View>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => dispatch(logout())} style={styles.drawerBottomBtn}>
+                <TouchableOpacity onPress={handleLogout} style={styles.drawerBottomBtn}>
                     <View style={styles.drawerBottomBtnInnerContainer}>
 
                         <Ionicons name="exit-sharp" size={24} color={'#b23b3b'} />
@@ -55,7 +66,7 @@ const CustomDrawer = (props) => {
                     </View>
                 </TouchableOpacity>
             </View>
-        </View>
+        </View >
     )
 }
 

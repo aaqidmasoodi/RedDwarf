@@ -7,12 +7,10 @@ import { useState, useEffect } from 'react'
 import api from '../api/config';
 import { setUser } from '../redux/slices/rootSlice'
 import { useSelector, useDispatch } from 'react-redux'
-
+import { Ionicons } from '@expo/vector-icons';
 
 
 const SelectBus = () => {
-
-
 
     const navigation = useNavigation();
     const [selected, setSelected] = useState(null);
@@ -34,6 +32,7 @@ const SelectBus = () => {
             })
                 .then(res => {
                     setBuses(res.data);
+                    // console.log(res.data)
                     setIsFetching(false);
 
                 })
@@ -93,7 +92,7 @@ const SelectBus = () => {
             </View>
 
 
-            <FlatList
+            {!isFetching && (buses?.length > 0) && <FlatList
                 style={styles.busList}
                 showsVerticalScrollIndicator={false}
                 data={buses}
@@ -136,11 +135,18 @@ const SelectBus = () => {
                         </TouchableOpacity>
                     )
                 }}
-            />
+            />}
+
+            {!isFetching && !(buses?.length > 0) &&
+                <View style={styles.noBusesView}>
+                    <Ionicons name="ios-sad-outline" size={128} color="#6f6f6f" />
+                    <Text style={styles.noBusesViewText}>There is nothing here.</Text>
+                </View>
+            }
 
 
 
-            < View style={styles.viewBottom} >
+            {(buses?.length > 0) && < View style={styles.viewBottom} >
                 <TouchableOpacity
                     onPress={handleContinue}
                     disabled={!didSelect}
@@ -148,7 +154,7 @@ const SelectBus = () => {
                     {!isLoading && <Text style={[styles.chooseBusButtonText, !didSelect && styles.chooseBusButtonTextDisabled]}>Continue</Text>}
                     {isLoading && <ActivityIndicator size="large" color="#cf8300" />}
                 </TouchableOpacity>
-            </View >
+            </View >}
 
         </SafeAreaView >
     )
@@ -176,10 +182,19 @@ const styles = StyleSheet.create({
     },
 
     noBusesView: {
-        marginVertical: 20,
-        height: '60%',
+        flex: 1,
+        // backgroundColor: 'red',
+        justifyContent: 'center',
+        alignItems: 'center'
     },
 
+    noBusesViewText: {
+        fontWeight: '600',
+        fontSize: 20,
+        color: '#6f6f6f',
+        width: '75%',
+        textAlign: 'center'
+    },
     busObject: {
         borderRadius: 10,
         marginBottom: 20,
@@ -206,7 +221,7 @@ const styles = StyleSheet.create({
 
     viewBottom: {
         flex: 1,
-        justifyContent: 'center',
+        justifyContent: 'flex-end',
         alignItems: 'center'
     },
 
@@ -279,7 +294,8 @@ const styles = StyleSheet.create({
         fontWeight: '600',
         color: '#4f4f4f',
         textAlign: 'center',
-        fontSize: 22
+        fontSize: 22,
+        textTransform: 'uppercase'
     }
 
 

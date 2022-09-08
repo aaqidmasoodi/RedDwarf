@@ -1,24 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit'
-
-// 
-// const loc = {
-//     "locations": [
-//         {
-//             "timestamp": 1662486606027,
-//             "coords": {
-//                 "altitude": 5,
-//                 "heading": 180,
-//                 "latitude": 37.4219983,
-//                 "longitude": -122.084,
-//                 "altitudeAccuracy": 0.5,
-//                 "speed": 4.943388918523585e-18,
-//                 "accuracy": 5
-//             }
-//         }
-//     ]
-// }
+import { LIVE_LOCATION_SOCKET_URL } from "../../api/config";
 
 const initialState = {
+    socket: null,
     busLocation: null,
     sharingLocation: false,
     receivingLocation: false
@@ -31,7 +15,8 @@ export const busLocationSlice = createSlice({
     initialState,
     reducers: {
         setBusLocation: (state, action) => {
-            state.busLocation = JSON.parse(action.payload);
+            payload = JSON.parse(action.payload);
+            state.busLocation = payload.locations[0]
         },
 
         setSharingLocation: (state, action) => {
@@ -40,11 +25,22 @@ export const busLocationSlice = createSlice({
 
         setReceivingLocation: (state, action) => {
             state.receivingLocation = action.payload;
+        },
+
+
+        connectSocket: (state) => {
+            const socket = new WebSocket(LIVE_LOCATION_SOCKET_URL);
+            state.socket = socket;
+        },
+
+        closeSocket: (state) => {
+            state.socket.close()
+            state.socket = null;
         }
     }
 })
 
 
-export const { setBusLocation, setSharingLocation, setReceivingLocation } = busLocationSlice.actions
+export const { setBusLocation, setSharingLocation, setReceivingLocation, connectSocket, closeSocket } = busLocationSlice.actions
 
 export default busLocationSlice.reducer

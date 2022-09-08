@@ -8,6 +8,7 @@ import * as SecureStore from 'expo-secure-store';
 const Stack = createStackNavigator();
 
 import { setToken, setUser, setIsLoading, logout } from '../redux/slices/rootSlice';
+import { connectSocket } from '../redux/slices/busLocationSlice';
 import { ActivityIndicator, Alert, View } from 'react-native';
 import api from '../api/config';
 
@@ -27,6 +28,7 @@ const Route = () => {
                 })
                     .then(res => {
                         dispatch(setToken(token));
+                        dispatch(connectSocket());
                         dispatch(setUser(res.data));
                         // console.log(res.data)
                     })
@@ -71,7 +73,10 @@ const Route = () => {
         <NavigationContainer>
 
             <Stack.Navigator>
-                {token ? MainStack(Stack)
+                {token ?
+
+                    MainStack(Stack)
+
                     : AuthStack(Stack)
                 }
             </Stack.Navigator>

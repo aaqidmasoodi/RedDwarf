@@ -7,12 +7,11 @@ import { useNavigation } from '@react-navigation/native';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { login } from '../redux/slices/rootSlice';
+import { connectSocket } from '../redux/slices/busLocationSlice';
 import { BASE_URL } from '../api/config'
 import axios from 'axios'
 
 const AccountCreated = () => {
-
-
 
     const userPhone = useSelector(state => state.signup.phoneNumber);
     const usePass = useSelector(state => state.signup.password);
@@ -43,6 +42,7 @@ const AccountCreated = () => {
         })
             .then(res => {
                 dispatch(login(res.data));
+                dispatch(connectSocket());
                 setIsLoading(false);
             })
 
@@ -50,7 +50,6 @@ const AccountCreated = () => {
                 Alert.alert('Sorry, could not log you in. Try again!')
                 setIsLoading(false);
             })
-
 
     }
 

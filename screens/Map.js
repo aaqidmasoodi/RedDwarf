@@ -5,14 +5,11 @@ import { useNavigation } from '@react-navigation/native';
 import { Ionicons, FontAwesome, MaterialIcons, Entypo } from '@expo/vector-icons';
 
 import * as Location from 'expo-location';
-import * as TaskManager from 'expo-task-manager';
 
 
 const LOCATION_TRACKING = 'location-tracking';
 import { useSelector, useDispatch } from 'react-redux';
-import { liveSocket } from '../api/Sockets/liveLocationSocket';
-
-import { setBusLocation, setSharingLocation, setReceivingLocation } from '../redux/slices/busLocationSlice';
+import { setSharingLocation } from '../redux/slices/busLocationSlice'; // Do not remove
 
 
 const Map = () => {
@@ -22,28 +19,10 @@ const Map = () => {
 
   const sharingLocation = useSelector(state => state.busLocation.sharingLocation)
 
-  const payload = useSelector(state => state.busLocation.busLocation)
-  const busLocation = payload ? payload.locations[0] : null
+  const busLocation = useSelector(state => state.busLocation.busLocation);
+
+
   const dispatch = useDispatch();
-
-
-  // api call
-  // res.data
-  // setLocation(res.daat)
-
-
-  liveSocket.onopen = () => {
-    console.log("Connected...")
-  }
-
-  if (!user?.is_driver) {
-
-    liveSocket.onmessage = (e) => {
-      console.log("Location Received...")
-      console.log(busLocation);
-      dispatch(setBusLocation(e.data)); //re render
-    };
-  }
 
 
   const startLocationTracking = async () => {
@@ -154,7 +133,7 @@ const Map = () => {
 
           )}
 
-        {(!user?.is_driver) &&
+        {!(user?.is_driver) &&
           <>
             <Text>{busLocation?.coords.latitude}</Text>
             <Text>{busLocation?.coords.longitude}</Text>
@@ -268,25 +247,5 @@ const styles = StyleSheet.create({
     zIndex: 9999
   }
 
-
-
-
-
 })
 
-TaskManager.defineTask(LOCATION_TRACKING, async ({ data, error }) => {
-  if (error) {
-    console.log('LOCATION_TRACKING task ERROR:', error);
-    return;
-  }
-  if (data) {
-    const { locations } = data;
-    let lat = locations[0].coords.latitude;
-    let long = locations[0].coords.longitude;
-
-    console.log(
-      `${new Date(Date.now()).toLocaleString()}: ${lat},${long}`
-    );
-    liveSocket.send(JSON.stringify(data));
-  }
-});
