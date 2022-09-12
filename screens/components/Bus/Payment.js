@@ -98,6 +98,7 @@ const Payment = () => {
         .then(res => {
           dispatch(setPayments(res.data));
           dispatch(setLoadingPayments(false));
+          setIsLoading(false);
         })
         .catch(err => {
           console.log(err.response);

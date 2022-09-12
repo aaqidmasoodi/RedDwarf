@@ -1,7 +1,11 @@
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { Feather } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 const PickupPoint = () => {
+
+
+    const navigation = useNavigation();
     return (
         <View style={[styles.pickupPointInfoContainer,
         Platform.OS === 'ios' ? styles.shadow : null]}>
