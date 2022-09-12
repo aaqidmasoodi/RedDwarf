@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, Platform } from 'react-native'
 import React from 'react'
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import { useNavigation } from '@react-navigation/native';
@@ -25,6 +25,7 @@ const LiveLocation = () => {
       opacity: 0
     }
 
+
   }
 
   return (
@@ -35,7 +36,8 @@ const LiveLocation = () => {
       activeOpacity={0.8}
       onPress={() => navigation.navigate('Map')}
     >
-      <View style={styles.smallMapContainer}>
+      <View style={[styles.smallMapContainer,
+      Platform.OS === 'ios' ? styles.addRoundedCorners : null]}>
 
         <MapView
           style={styles.smallMap}
@@ -52,11 +54,11 @@ const LiveLocation = () => {
         {receivingLocation &&
           <Animatable.View
             animation={blink}
-            duration={500}
+            duration={1000}
             iterationCount={'infinite'}
-            iterationDelay={1000}
-            easing={'ease-in-out'}
-
+            iterationDelay={500}
+            easing={'ease-in-out-sine'}
+            useNativeDriver
             style={styles.locationLiveIndicator}>
 
           </Animatable.View>}
@@ -70,6 +72,12 @@ const LiveLocation = () => {
         {receivingLocation && <View style={styles.mapOverlayHeader}>
           <Text style={{ fontWeight: 'bold', fontSize: 16, color: '#6f6f6f' }}>Live location Available</Text>
           <Text>Tap to View</Text>
+        </View>}
+
+        {receivingLocation && <View style={styles.mapOverlayFooter}>
+          <Text style={{ fontWeight: 'bold', fontSize: 16, color: '#8f8f8f' }}>ETA</Text>
+          <Text style={{ fontWeight: 'bold', fontSize: 20, color: '#6f6f6f', marginLeft: 3 }}>{'12'}</Text>
+          <Text style={{ fontWeight: 'bold', fontSize: 16, color: '#8f8f8f', marginLeft: 3 }}>mins</Text>
         </View>}
       </View>
 
@@ -97,6 +105,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
+
     width: '100%',
     height: 200,
     elevation: 5,
@@ -105,27 +114,31 @@ const styles = StyleSheet.create({
 
 
   smallMapContainer: {
-    // borderTopLeftRadius: 20,
-    // borderTopRightRadius: 20,
+
     overflow: 'hidden',
     flex: 3,
 
   },
 
+  addRoundedCorners: {
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+  },
+
 
   smallMap: {
-    overflow: 'hidden',
     flex: 3,
 
   },
 
 
   mapOverlay: {
-    flex: 1,
+    flex: 1.25,
+    alignItems: 'flex-start',
     backgroundColor: '#ffffff',
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
-    padding: 15
+    padding: 15,
 
   },
 
@@ -133,6 +146,15 @@ const styles = StyleSheet.create({
 
     flexDirection: 'row',
     justifyContent: 'space-between'
+
+  },
+
+
+  mapOverlayFooter: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    marginTop: -5
 
   },
 

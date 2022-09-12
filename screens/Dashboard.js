@@ -5,33 +5,79 @@ import TodayView from './components/Dashboard/TodayView';
 import BusInfo from './components/Dashboard/BusInfo';
 import Alerts from './components/Dashboard/Alerts';
 import SelectBusComponent from './components/SelectBusComponent';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import { Entypo } from '@expo/vector-icons';
 import { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 
+import api from '../api/config'
+import { setUser } from '../redux/slices/rootSlice';
+import Toast from 'react-native-toast-message'
+
 const Dashboard = () => {
 
   const user = useSelector(state => state.root.user);
+  const token = useSelector(state => state.root.token);
   const navigation = useNavigation();
 
   const bus = user ? user.bus : null;
 
+  const dispatch = useDispatch();
   const [refreshing, setRefreshing] = useState(false);
-
-  const handleRefresh = () => {
-    console.log("Refreshed...")
-  }
 
 
   useEffect(() => {
-    const log = navigation.addListener('focus', () => {
-      handleRefresh();
+    Toast.show({
+      type: 'success',
+      text1: 'Welcome',
+      text2: `You are logged in as ${user?.name}`,
     });
+  }, [])
 
-    return log;
-  }, [navigation]);
+
+  const handleRefresh = () => {
+    setRefreshing(true);
+
+    if (token !== null) {
+      api.get('/accounts/user-info/', {
+        headers: { Authorization: `Token ${token}` }
+      })
+        .then(res => {
+          dispatch(setUser(res.data))
+          setRefreshing(false);
+
+        })
+        .catch(err => {
+          console.log(err.response);
+          setRefreshing(false);
+        })
+    }
+  }
+
+  // const refresh = () => {
+  //   if (token !== null) {
+  //     api.get('/accounts/user-info/', {
+  //       headers: { Authorization: `Token ${token}` }
+  //     })
+  //       .then(res => {
+  //         dispatch(setUser(res.data))
+  //       })
+  //       .catch(err => {
+  //         console.log(err.response);
+  //       })
+  //   }
+
+  // }
+
+
+  // useEffect(() => {
+  //   const log = navigation.addListener('focus', () => {
+  //     refresh();
+  //   });
+
+  //   return log;
+  // }, [navigation]);
 
 
   return (

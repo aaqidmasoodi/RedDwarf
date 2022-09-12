@@ -47,12 +47,16 @@ export const rootSlice = createSlice({
 
     setRefreshing: (state, action) => {
       state.refreshing = action.payload
+    },
+
+    setIsLoggedIn: (state, action) => {
+      state.isLoggedIn = action.payload
     }
   },
 })
 
 // Action creators are generated for each case reducer function
-export const { login, logout, setToken, setUser, setIsLoading } = rootSlice.actions
+export const { login, logout, setToken, setUser, setIsLoading, setIsLoggedIn } = rootSlice.actions
 
 
 

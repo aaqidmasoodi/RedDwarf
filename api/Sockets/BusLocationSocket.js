@@ -7,7 +7,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { setReceivingLocation, setSharingLocation, setBusLocation } from '../../redux/slices/busLocationSlice';
 
 import * as TaskManager from 'expo-task-manager';
-
+import Toast from 'react-native-toast-message'
 
 const LOCATION_TRACKING = 'location-tracking';
 
@@ -20,17 +20,26 @@ const BusLocationSocket = ({ children }) => {
 
     const dispatch = useDispatch();
 
-
     const handleReceivingLocation = ({ location }) => {
         dispatch(setBusLocation(location));
         if (!receivingLocation) {
             dispatch(setReceivingLocation(true));
             console.log("dispatched receiving.... true")
+            Toast.show({
+                type: 'success',
+                text1: 'Live Location Available',
+                text2: `You can now track your bus.`,
+            });
         }
         return setTimeout(() => {
             if (receivingLocation) {
                 dispatch(setReceivingLocation(false));
                 console.log("dispatched receiving.... false")
+                Toast.show({
+                    type: 'error',
+                    text1: 'Live Location Ended',
+                    text2: `You can no longer track your bus.`,
+                });
             }
         }, 5000);
     }
@@ -91,6 +100,7 @@ TaskManager.defineTask(LOCATION_TRACKING, async ({ data, error }) => {
         return;
     }
     if (data) {
+        console.log("Inside task manager location...")
         const state = store.getState();
         const liveLocationSocket = state.busLocation.socket;
         const { locations } = data;

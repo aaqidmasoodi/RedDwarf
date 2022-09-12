@@ -6,24 +6,17 @@ import { useSelector } from 'react-redux'
 
 const BusBasicInfo = () => {
 
-
-
   const user = useSelector(state => state.root.user);
-  const bus = user ? user.bus : null
-  const busNumber = bus ? bus.number : null;
-  const busStart = bus ? bus.start : null;
-  const busDestination = bus ? bus.destination : null;
-
 
   return (
     <View style={styles.busBasicInfoContainer}>
       <View>
         <Text style={styles.busNoText}>Bus</Text>
-        <Text style={styles.busNoDigitText}>{busNumber}</Text>
+        <Text style={styles.busNoDigitText}>{user?.bus?.number}</Text>
       </View>
       <View style={{ marginTop: 5 }}>
-        <Text style={[styles.busBasicInfoRoute, styles.busStartText]}>{busStart}</Text>
-        <Text style={[styles.busBasicInfoRoute, styles.busEndText]}>{busDestination}</Text>
+        <Text style={[styles.busBasicInfoRoute, styles.busStartText]}>{user?.bus?.start}</Text>
+        <Text style={[styles.busBasicInfoRoute, styles.busEndText]}>{user?.bus?.destination}</Text>
       </View>
     </View>
   )

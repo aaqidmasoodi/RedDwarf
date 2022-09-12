@@ -7,7 +7,7 @@ import { useState, useEffect } from 'react'
 import api from '../api/config';
 import { setUser } from '../redux/slices/rootSlice'
 import { useSelector, useDispatch } from 'react-redux'
-import { Ionicons } from '@expo/vector-icons';
+
 
 
 const SelectBus = () => {
@@ -139,7 +139,6 @@ const SelectBus = () => {
 
             {!isFetching && !(buses?.length > 0) &&
                 <View style={styles.noBusesView}>
-                    <Ionicons name="ios-sad-outline" size={128} color="#6f6f6f" />
                     <Text style={styles.noBusesViewText}>There is nothing here.</Text>
                 </View>
             }

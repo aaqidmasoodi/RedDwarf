@@ -9,29 +9,62 @@ import LiveLocation from './components/Bus/LiveLocation';
 import DriverInfo from './components/Bus/DriverInfo';
 
 import SelectBusComponent from './components/SelectBusComponent';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
-import MapView from 'react-native-maps';
+import { setUser } from '../redux/slices/rootSlice';
+import api from '../api/config'
 
 
 const Bus = () => {
     const user = useSelector(state => state.root.user);
     const bus = user ? user.bus : null;
     const navigation = useNavigation();
+    const token = useSelector(state => state.root.token);
 
+    const dispatch = useDispatch();
     const [refreshing, setRefreshing] = useState(false);
-
     const handleRefresh = () => {
-        console.log("Refreshed...")
+        setRefreshing(true);
+
+        if (token !== null) {
+            api.get('/accounts/user-info/', {
+                headers: { Authorization: `Token ${token}` }
+            })
+                .then(res => {
+                    dispatch(setUser(res.data))
+                    setRefreshing(false);
+
+                })
+                .catch(err => {
+                    console.log(err.response);
+                    setRefreshing(false);
+                })
+        }
     }
 
-    useEffect(() => {
-        const log = navigation.addListener('focus', () => {
-            handleRefresh();
-        });
 
-        return log;
-    }, [navigation]);
+    // const refresh = () => {
+    //     if (token !== null) {
+    //         api.get('/accounts/user-info/', {
+    //             headers: { Authorization: `Token ${token}` }
+    //         })
+    //             .then(res => {
+    //                 dispatch(setUser(res.data))
+    //             })
+    //             .catch(err => {
+    //                 console.log(err.response);
+    //             })
+    //     }
+
+    // }
+
+    // useEffect(() => {
+    //     const log = navigation.addListener('focus', () => {
+    //         refresh();
+    //     });
+
+    //     return log;
+    // }, [navigation]);
 
     return (
 

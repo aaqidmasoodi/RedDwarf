@@ -50,7 +50,6 @@ const Alerts = () => {
                 keyExtractor={(item) => item.id}
                 showsHorizontalScrollIndicator={false}
                 horizontal
-                tyle={styles.noticeObject}
                 renderItem={({ item }) => {
                     return (
 

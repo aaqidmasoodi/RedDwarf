@@ -4,21 +4,24 @@ import { Provider, useSelector, useDispatch } from 'react-redux';
 import { LogBox, StatusBar } from 'react-native';
 import Route from './Navigations/Route';
 import Sockets from './api/Sockets/Sockets';
-
-// import * as LIVE_LOCATION_SOCKET from './api/Sockets/liveLocationSocket'
+import Toast from 'react-native-toast-message';
 
 LogBox.ignoreAllLogs(true);
 
 
 export default function App() {
 
-
   return (
+
     <Provider store={store}>
       <Sockets>
-        <StatusBar barStyle="dark-content" hidden={false} backgroundColor="#ffffff00" translucent={true} />
+        <StatusBar barStyle="dark-content" backgroundColor="#ffffff00" translucent={true} />
         <Route />
       </Sockets>
+      <Toast
+        position='bottom'
+        bottomOffset={80}
+      />
     </Provider>
 
   );

@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { MaterialIcons, Ionicons } from '@expo/vector-icons';
@@ -20,7 +20,8 @@ const Settings = () => {
 
                     <TouchableOpacity
                         onPress={() => navigation.navigate('SelectBus')}
-                        style={styles.settingsOptionBtn}>
+                        style={[styles.settingsOptionBtn,
+                        Platform.OS === 'ios' ? styles.shadow : null]}>
                         <View style={styles.settingOption}>
                             <Ionicons name='bus-sharp' size={22} color='#cf8300' />
                             <Text style={styles.settingsOptionText}>
@@ -40,6 +41,14 @@ const Settings = () => {
 export default Settings
 
 const styles = StyleSheet.create({
+
+    shadow: {
+        shadowOffset: { width: 0, height: 0 },
+        shadowColor: 'black',
+        shadowOpacity: 0.2,
+        shadowRadius: 2,
+        zIndex: 999,
+    },
 
 
     container: {

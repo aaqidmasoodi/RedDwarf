@@ -5,17 +5,16 @@ import { StripeProvider } from '@stripe/stripe-react-native';
 import Payment from './Payment';
 import { STRIPE_PUBLISHABLE_KEY } from '@env';
 import { useSelector } from 'react-redux';
-
+import { getFormattedDateFull } from '../../../utils/getFormattedDate';
 
 const SeatInfo = () => {
 
-  const [active, setActive] = useState(false);
 
   const user = useSelector(state => state.root.user);
+  const active = user?.seatreservationstatus.status
+  const reservationStatus = useSelector(state => state.root.user?.seatreservationstatus)
+  const expiryDate = reservationStatus?.expiry_date ? getFormattedDateFull(reservationStatus.expiry_date) : 'Not available';
 
-  const bus = user ? user.bus : null;
-
-  const busSeats = bus ? bus.seats : null;
 
   return (
 
@@ -27,17 +26,17 @@ const SeatInfo = () => {
 
         <View style={styles.seatCountContainer}>
           <Text style={styles.seatCountLabel}>Seats</Text>
-          <Text style={styles.seatCountLabel}>{busSeats}</Text>
+          <Text style={styles.seatCountLabel}>{user?.bus?.seats}</Text>
         </View>
 
         <View style={styles.availBookStatusContainer}>
           <View>
-            <Text style={styles.seatBookLabel}>Booked</Text>
+            <Text style={styles.seatBookLabel}>Reserved</Text>
             <Text style={styles.seatBookCount}>0</Text>
           </View>
           <View>
             <Text style={styles.seatAvailLabel}>Available</Text>
-            <Text style={styles.seatAvailCount}>{busSeats}</Text>
+            <Text style={styles.seatAvailCount}>{user?.bus?.seats}</Text>
           </View>
         </View>
 
@@ -48,7 +47,7 @@ const SeatInfo = () => {
 
         {active ?
           <View style={styles.seatBookedStatus}>
-            <Text style={styles.seatBookedText}>Booked</Text>
+            <Text style={styles.seatBookedText}>Reserved</Text>
             <Ionicons name='checkmark-sharp' size={26} color='#ffffff' />
           </View> :
 
@@ -62,14 +61,14 @@ const SeatInfo = () => {
 
           <View>
             <Text style={{ textAlign: 'center', fontWeight: '600', fontSize: 18, color: '#fff' }}>Your seat is reserved.</Text>
-            <Text style={{ textAlign: 'center', fontSize: 14, color: '#fff', marginTop: 2 }}>Next payment date is 30 Auguest 2022.</Text>
+            <Text style={{ textAlign: 'center', fontSize: 14, color: '#fff', marginTop: 2 }}>Next payment date is {expiryDate}.</Text>
           </View>
 
         </View>}
 
 
         <StripeProvider publishableKey={STRIPE_PUBLISHABLE_KEY}>
-          {!active && <Payment updateStatus={setActive} />}
+          {!active && <Payment />}
         </StripeProvider>
 
 

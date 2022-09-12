@@ -1,11 +1,11 @@
-import { Dimensions, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Alert, Dimensions, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useState, useEffect, useRef } from 'react'
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons, FontAwesome, MaterialIcons, Entypo } from '@expo/vector-icons';
 
 import * as Location from 'expo-location';
-
+import * as Linking from 'expo-linking';
 
 const LOCATION_TRACKING = 'location-tracking';
 import { useSelector, useDispatch } from 'react-redux';
@@ -52,7 +52,18 @@ const Map = () => {
 
         let { status } = await Location.requestBackgroundPermissionsAsync();
         if (status !== 'granted') {
-          console.log('Permission to access location was denied');
+          Alert.alert(
+            "Permisson Required.",
+            'You must allow background location permissions to shart sharing your location.',
+            [
+              {
+                text: "Dont Allow",
+                onPress: () => navigation.goBack(),
+                style: "cancel"
+              },
+              { text: "Open Settings", onPress: () => Linking.openSettings() }
+            ]
+          );
           return;
         }
       }
@@ -96,7 +107,7 @@ const Map = () => {
 
       <TouchableOpacity
         onPress={() => navigation.navigate('Bus')}
-        activeOpacity={0.9}
+        // activeOpacity={0.9}
         style={[styles.buttonBack,
         Platform.OS === 'ios' ? styles.shadow : null]}
       >
@@ -106,7 +117,8 @@ const Map = () => {
 
       <TouchableOpacity
         onPress={() => console.log('hello World')}
-        style={styles.myLocationButton}
+        style={[styles.myLocationButton,
+        Platform.OS === 'ios' ? styles.shadow : null]}
       >
         <MaterialIcons name="my-location" size={24} color="#cf8300" />
       </TouchableOpacity>
@@ -155,7 +167,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 0 },
     shadowColor: 'black',
     shadowOpacity: 0.3,
-    shadowRadius: 5,
+    shadowRadius: 3,
     zIndex: 999,
   },
 

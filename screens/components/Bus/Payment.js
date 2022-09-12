@@ -3,16 +3,23 @@ import React, { useState } from 'react'
 import { useStripe } from '@stripe/stripe-react-native'
 import * as Animatable from 'react-native-animatable';
 import { BASE_URL } from '../../../api/config'
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { setUser } from '../../../redux/slices/rootSlice';
+import { setPayments, setLoadingPayments } from '../../../redux/slices/paymentsSlice'
+import Toast from 'react-native-toast-message'
+import api from '../../../api/config'
 const AnimatedTouchable = Animatable.createAnimatableComponent(TouchableOpacity);
 
 
-const Payment = (props) => {
+const Payment = () => {
 
   const stripe = useStripe();
   const [isLoading, setIsLoading] = useState(false);
   const token = useSelector(state => state.root.token)
   const user = useSelector(state => state.root.user);
+
+
+  const dispatch = useDispatch();
 
   const attemptPayment = async () => {
     setIsLoading(true);
@@ -73,10 +80,37 @@ const Payment = (props) => {
         return Alert.alert(presentSheet.error.message);
       }
 
+      api.get('/accounts/user-info/', {
+        headers: { Authorization: `Token ${token}` }
+      })
+        .then(res => {
+          dispatch(setUser(res.data))
+        })
+        .catch(err => {
+          console.log(err);
+          setIsLoading(false);
+        })
 
-      setIsLoading(false);
-      props.updateStatus(true);
-      Alert.alert("Payment Successful. Thank you!");
+
+      api.get('/payments/', {
+        headers: { Authorization: `Token ${token}` }
+      })
+        .then(res => {
+          dispatch(setPayments(res.data));
+          dispatch(setLoadingPayments(false));
+        })
+        .catch(err => {
+          console.log(err.response);
+          dispatch(setLoadingPayments(false));
+          setIsLoading(false);
+        })
+
+
+      Toast.show({
+        type: 'success',
+        text1: 'Payment Successful.',
+        text2: `New payment reciept has been added to your profile.`,
+      });
 
     } catch (err) {
       console.error(err);

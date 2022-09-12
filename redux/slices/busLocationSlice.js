@@ -29,6 +29,7 @@ export const busLocationSlice = createSlice({
 
 
         connectSocket: (state) => {
+            state.socket = null;
             const socket = new WebSocket(LIVE_LOCATION_SOCKET_URL);
             state.socket = socket;
         },
@@ -36,6 +37,7 @@ export const busLocationSlice = createSlice({
         closeSocket: (state) => {
             state.socket.close()
             state.socket = null;
+
         }
     }
 })
