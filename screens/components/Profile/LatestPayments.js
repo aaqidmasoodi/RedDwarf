@@ -8,12 +8,15 @@ import { getFormattedDate } from '../../../utils/getFormattedDate';
 
 
 import api from '../../../api/config'
+import { useNavigation } from '@react-navigation/native'
 
 const LatestPayments = () => {
 
     const payments = useSelector(state => state.payments.payments);
     const loadingPayments = useSelector(state => state.payments.loadingPayments)
     const token = useSelector(state => state.root.token);
+
+    const navigation = useNavigation();
 
     const dispatch = useDispatch();
 
@@ -48,7 +51,9 @@ const LatestPayments = () => {
 
                 <View style={styles.paymentsContainerTitleContainer}>
                     <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#6f6f6f' }}>Payments</Text>
-                    <TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={() => navigation.navigate('AllPayments')}
+                    >
                         <Text style={{ fontWeight: 'bold', color: '#cf8300', fontSize: 16 }}>View All</Text>
 
                     </TouchableOpacity>

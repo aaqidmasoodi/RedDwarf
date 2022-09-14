@@ -11,6 +11,8 @@ const LiveLocation = () => {
   const navigation = useNavigation();
   const user = useSelector(state => state.root.user);
   const receivingLocation = useSelector(state => state.busLocation.receivingLocation);
+  const sharingLocation = useSelector(state => state.busLocation.sharingLocation)
+
 
   const blink = {
     0: {
@@ -65,20 +67,42 @@ const LiveLocation = () => {
       </View>
 
       <View style={styles.mapOverlay}>
-        {!receivingLocation && <View style={styles.mapOverlayHeader}>
-          <Text style={{ fontWeight: 'bold', fontSize: 16, color: '#6f6f6f' }}>Live location Unavailable</Text>
-          <></>
-        </View>}
-        {receivingLocation && <View style={styles.mapOverlayHeader}>
-          <Text style={{ fontWeight: 'bold', fontSize: 16, color: '#6f6f6f' }}>Live location Available</Text>
-          <Text>Tap to View</Text>
-        </View>}
 
-        {receivingLocation && <View style={styles.mapOverlayFooter}>
-          <Text style={{ fontWeight: 'bold', fontSize: 16, color: '#8f8f8f' }}>ETA</Text>
-          <Text style={{ fontWeight: 'bold', fontSize: 20, color: '#6f6f6f', marginLeft: 3 }}>{'12'}</Text>
-          <Text style={{ fontWeight: 'bold', fontSize: 16, color: '#8f8f8f', marginLeft: 3 }}>mins</Text>
-        </View>}
+
+        {!(user?.is_driver) && <>
+          {!receivingLocation && <View style={styles.mapOverlayHeader}>
+            <Text style={{ fontWeight: 'bold', fontSize: 16, color: '#6f6f6f' }}>Live location Unavailable</Text>
+            <></>
+          </View>}
+          {receivingLocation && <View style={styles.mapOverlayHeader}>
+            <Text style={{ fontWeight: 'bold', fontSize: 16, color: '#6f6f6f' }}>Live location Available</Text>
+            <Text style={{ color: '#6f6f6f' }}>Tap to View</Text>
+          </View>}
+
+          {receivingLocation && <View style={styles.mapOverlayFooter}>
+            <Text style={{ fontWeight: 'bold', fontSize: 16, color: '#8f8f8f' }}>ETA</Text>
+            <Text style={{ fontWeight: 'bold', fontSize: 20, color: '#6f6f6f', marginLeft: 3 }}>{'12'}</Text>
+            <Text style={{ fontWeight: 'bold', fontSize: 16, color: '#8f8f8f', marginLeft: 3 }}>mins</Text>
+          </View>}
+        </>}
+
+
+        {(user?.is_driver) && <>
+          {!sharingLocation && <View style={styles.mapOverlayHeader}>
+            <Text style={{ fontWeight: 'bold', fontSize: 16, color: '#6f6f6f' }}>Live Location</Text>
+            <></>
+          </View>}
+          {sharingLocation && <View style={styles.mapOverlayHeader}>
+            <Text style={{ fontWeight: 'bold', fontSize: 16, color: '#6f6f6f' }}>Live location Available</Text>
+            <Text style={{ color: '#6f6f6f' }}>Tap to View</Text>
+          </View>}
+
+          {!sharingLocation && <View style={styles.mapOverlayFooter}>
+            <Text style={{ fontWeight: '500', fontSize: 16, color: '#8f8f8f' }}>You are not sharing your location.</Text>
+          </View>}
+        </>}
+
+
       </View>
 
 
@@ -134,7 +158,7 @@ const styles = StyleSheet.create({
 
   mapOverlay: {
     flex: 1.25,
-    alignItems: 'flex-start',
+    // alignItems: 'flex-start',
     backgroundColor: '#ffffff',
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
@@ -145,7 +169,8 @@ const styles = StyleSheet.create({
   mapOverlayHeader: {
 
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    alignItems: 'center'
 
   },
 
@@ -154,7 +179,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',
-    marginTop: -5
+    marginTop: -1
 
   },
 

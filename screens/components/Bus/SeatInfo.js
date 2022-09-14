@@ -15,6 +15,9 @@ const SeatInfo = () => {
   const reservationStatus = useSelector(state => state.root.user?.seatreservationstatus)
   const expiryDate = reservationStatus?.expiry_date ? getFormattedDateFull(reservationStatus.expiry_date) : 'Not available';
 
+  const getAvailableSeats = () => {
+    return parseInt(user?.bus?.seats) - parseInt(user?.bus?.reserved_seats)
+  }
 
   return (
 
@@ -32,11 +35,11 @@ const SeatInfo = () => {
         <View style={styles.availBookStatusContainer}>
           <View>
             <Text style={styles.seatBookLabel}>Reserved</Text>
-            <Text style={styles.seatBookCount}>0</Text>
+            <Text style={styles.seatBookCount}>{user?.bus?.reserved_seats}</Text>
           </View>
           <View>
             <Text style={styles.seatAvailLabel}>Available</Text>
-            <Text style={styles.seatAvailCount}>{user?.bus?.seats}</Text>
+            <Text style={styles.seatAvailCount}>{getAvailableSeats()}</Text>
           </View>
         </View>
 

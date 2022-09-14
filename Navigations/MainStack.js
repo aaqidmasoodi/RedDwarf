@@ -5,6 +5,7 @@ import SelectBus from '../screens/SelectBus';
 import DrawerStack from './DrawerStack';
 import BusChanged from '../screens/BusChanged';
 import SetPickUpPoint from '../screens/SetPickUpPoint';
+import AllPayments from '../screens/AllPayments'
 
 const MainStack = (Stack) => {
 
@@ -57,6 +58,16 @@ const MainStack = (Stack) => {
                     headerShown: false
                 }}
             />
+
+            <Stack.Screen
+                name='AllPayments'
+                component={AllPayments}
+                options={{
+                    headerShown: false
+                }}
+            />
+
+
 
         </>
     )

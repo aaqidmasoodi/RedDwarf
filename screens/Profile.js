@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image, ScrollView, RefreshControl, ActivityIndicator } from 'react-native'
+import { StyleSheet, View, ScrollView, RefreshControl } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
@@ -17,8 +17,6 @@ const Profile = () => {
 
   const user = useSelector(state => state.root.user);
   const token = useSelector(state => state.root.token);
-
-
 
   const dispatch = useDispatch();
   const [refreshing, setRefreshing] = useState(false);

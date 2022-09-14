@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TouchableOpacity, View, ScrollView, RefreshControl } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, View, ScrollView, RefreshControl, Image, Dimensions } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import React, { useEffect, useState } from 'react'
 
@@ -7,7 +7,8 @@ import BusBasicInfo from './components/Bus/BusBasicInfo';
 import SeatInfo from './components/Bus/SeatInfo';
 import LiveLocation from './components/Bus/LiveLocation';
 import DriverInfo from './components/Bus/DriverInfo';
-
+import Members from './components/Bus/Members';
+import DriverBusInfo from './components/Bus/DriverBusInfo';
 import SelectBusComponent from './components/SelectBusComponent';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
@@ -20,7 +21,6 @@ const Bus = () => {
     const bus = user ? user.bus : null;
     const navigation = useNavigation();
     const token = useSelector(state => state.root.token);
-
     const dispatch = useDispatch();
     const [refreshing, setRefreshing] = useState(false);
     const handleRefresh = () => {
@@ -80,13 +80,26 @@ const Bus = () => {
             >
                 <View style={styles.contentContainer}>
 
-                    <BusBasicInfo />
-                    {(!user?.is_driver) && <SeatInfo />}
 
+
+
+
+                    <BusBasicInfo />
+
+                    {(user?.is_driver) && <DriverBusInfo />}
+
+                    {(user?.is_driver) && <Members />}
+
+                    {(!user?.is_driver) && <SeatInfo />}
 
                     <LiveLocation />
 
                     {(!user?.is_driver) && <DriverInfo />}
+
+
+
+
+
 
                 </View>
             </ScrollView>}
@@ -161,6 +174,9 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center'
     },
+
+
+
 
 
 });
